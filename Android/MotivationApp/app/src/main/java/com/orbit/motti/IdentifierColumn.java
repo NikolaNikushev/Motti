@@ -27,6 +27,4 @@ public abstract class IdentifierColumn {
             value = "'" + value.toString().replace("'","''") + "'";
         return this.name + " = " + value.toString();
     }
-
-
 }

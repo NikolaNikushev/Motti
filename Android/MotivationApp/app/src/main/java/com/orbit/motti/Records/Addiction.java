@@ -21,7 +21,6 @@ public class Addiction extends Record {
     protected void createFromDatabase(Cursor data) {
         this.name = data.getString(0);
     }
-
     @Override
     protected IdentifierColumn setIdentifierColumn() {
         return new IdentifierColumn(this, "name") {
@@ -29,14 +28,21 @@ public class Addiction extends Record {
             public Object getValue() {
                 return ((Addiction)this.getRecord()).getName();
             }
+
             @Override
             public void setValue(Object value) {
-                ((Addiction) this.getRecord()).setName((String) value);
+                ((Addiction)this.getRecord()).setName((String) value);
             }
         };
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    protected void copyFrom(Record data) {
+        Addiction copy = (Addiction)data;
+        this.name = copy.name;
     }
 }

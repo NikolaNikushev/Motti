@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.orbit.motti.Records.Profile;
+
+import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +29,6 @@ public class Home extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
@@ -50,6 +52,20 @@ public class Home extends AppCompatActivity {
                 showDialog();
             }
         });
+
+        Database database = new Database();
+        database.connectToDatabase(this);
+        //Initialize the database, setting Database.Instance to the first created;
+        Profile p = new Profile("test");
+
+        try {
+            p.loadFromDatabase();
+        }catch (InvalidClassException ex){
+            //unable to load data from the database ( 0 records )
+        }
+        catch (Exception ex){
+            //invalid columns
+        }
     }
 
     private void updateUI() {
@@ -89,7 +105,7 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         goalDialog.dismiss();
-                   //     updateUI();
+                        //     updateUI();
                     }
                 });
 

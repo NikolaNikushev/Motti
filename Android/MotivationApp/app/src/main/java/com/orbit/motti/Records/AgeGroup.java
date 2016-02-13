@@ -27,6 +27,12 @@ public class AgeGroup extends Record {
     }
 
     @Override
+    protected void copyFrom(Record data) {
+        AgeGroup copy = (AgeGroup)data;
+        this.name = copy.name;
+    }
+
+    @Override
     protected IdentifierColumn setIdentifierColumn() {
         return new IdentifierColumn(this, "name") {
             @Override

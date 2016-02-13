@@ -57,19 +57,23 @@ public class Profile extends Record {
         this.ageGroup = new AgeGroup(data.getString(ageGroupIndex));
 
         this.addictions.clear();
-        Addiction a = new Addiction();
-        Cursor records = Database.Instance.executeWithResult("Select * from " + a.getTableName() + " where " + a.getIdentifierColumn().forQuery());
+        ProfileAddiction a = new ProfileAddiction();
+        Cursor records = Database.Instance.executeWithResult("Select * from " + a.getTableName() + " where profile = '" + this.username +"'");
 
         while (records.moveToNext()) {
-            a = new Addiction();
-            nameIndex = records.getColumnIndex(a.getIdentifierColumn().getName());
-            String name = records.getString(nameIndex);
-            a.getIdentifierColumn().setValue(name);
-            try {
-                a.loadFromDatabase();
-            } catch (Exception ex) {//todo unable to load}
-            }
+            a = new ProfileAddiction();
+            a.createFromDatabase(records);
+            this.addictions.add(a.getAddiction());
         }
+    }
+
+    @Override
+    protected void copyFrom(Record data) {
+        Profile copy = (Profile)data;
+        this.credits = copy.credits;
+        this.ageGroup = copy.ageGroup;
+        this.addictions = copy.addictions;
+        this.username = copy.username;
     }
 
     @Override

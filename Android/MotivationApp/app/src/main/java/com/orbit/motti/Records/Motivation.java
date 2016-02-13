@@ -36,6 +36,14 @@ public class Motivation extends Record {
     }
 
     @Override
+    protected void copyFrom(Record data) {
+        Motivation copy = (Motivation)data;
+        this.description = copy.description;
+        this.image = copy.image;
+        this.isPositive = copy.isPositive;
+    }
+
+    @Override
     protected IdentifierColumn setIdentifierColumn() {
         return new IdentifierColumn(this, "description") {
             @Override
