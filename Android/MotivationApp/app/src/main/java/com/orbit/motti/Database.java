@@ -33,7 +33,7 @@ public class Database {
                 ");" );
 
         // 12-15; 15-17 etc
-        CreateTable("from Age_Group", "CREATE TABLE age_group (\n" +
+        CreateTable("Age_Group", "CREATE TABLE age_group (\n" +
                 "\tname VARCHAR(100) NOT NULL,\n" +
                 "\tCONSTRAINT age_group_pk PRIMARY KEY (name)\n" +
                 ");\n" +
@@ -109,6 +109,10 @@ public class Database {
 
         String sql = "Select * from " + record.getTableName() + " Where " + whereStatement;
         return executeWithResult(sql);
+    }
+
+    public static void executeSQL(String sql){
+        database.execSQL(sql);
     }
 
     public static Cursor executeWithResult(String sql) {
