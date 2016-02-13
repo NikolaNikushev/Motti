@@ -8,20 +8,20 @@ import android.os.Parcelable;
  */
 public class SubGoal implements Parcelable {
 
-    private final String subGoalTitle;
-    private final int subGoalTimePeriod;
+    private  String subGoalTitle;
+    private int subGoalTimePeriod;
     private boolean isFinished;
 
     public SubGoal(String goalTitle, int subGoalTimePeriod) {
+        this.subGoalTimePeriod = subGoalTimePeriod;
         this.subGoalTitle = goalTitle;
         this.isFinished = false;
-        this.subGoalTimePeriod = subGoalTimePeriod;
     }
 
 
     protected SubGoal(Parcel in) {
-        subGoalTitle = in.readString();
         subGoalTimePeriod = in.readInt();
+        subGoalTitle = in.readString();
         isFinished = in.readByte() != 0;
     }
 
@@ -60,8 +60,8 @@ public class SubGoal implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(subGoalTitle);
         dest.writeInt(subGoalTimePeriod);
+        dest.writeString(subGoalTitle);
         dest.writeByte((byte) (isFinished ? 1 : 0));
     }
 }

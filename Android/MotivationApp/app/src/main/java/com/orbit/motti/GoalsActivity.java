@@ -23,7 +23,7 @@ import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Home extends AppCompatActivity {
+public class GoalsActivity extends AppCompatActivity {
     private int lastDeletedPosition = -1;
     private Goal lastDeletedGoal;
     private RecyclerView mRecyclerView;
@@ -31,6 +31,7 @@ public class Home extends AppCompatActivity {
     private TextView firstTimeTextView;
     private GoalAdapter goalSwipeAdapter;
     public static Profile p;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -204,15 +205,11 @@ public class Home extends AppCompatActivity {
     private void fillGoals() {
         for (int i = 0; i < 15; i++) {
             Goal g = new Goal("I want to quit smoking " + i, getFillerText(), 4, 5);
-            SubGoal sg = new SubGoal("I want to not go out this Friday", 3);
-            sg.setIsFinished(true);
-            SubGoal sg1 = new SubGoal("I want to not go out this Friday", 3);
-            sg1.setIsFinished(true);
-            SubGoal sg2 = new SubGoal("I want to not go out this Friday", 3);
-            sg2.setIsFinished(false);
-            g.addSubGoal(sg);
-            g.addSubGoal(sg1);
-            g.addSubGoal(sg2);
+            for (int y = 0; y < 15; y++) {
+                SubGoal sg = new SubGoal("I want to smoke only 1 cigarrete today", 4);
+                sg.setIsFinished(y % 2 == 0);
+                g.addSubGoal(sg);
+            }
             goals.add(g);
         }
     }

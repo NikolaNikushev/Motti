@@ -34,7 +34,8 @@ public class Goal implements Parcelable {
         goalPeriod = in.readInt();
         goalTitle = in.readString();
         goalDescription = in.readString();
-        subGoals = in.createTypedArrayList(SubGoal.CREATOR);
+        subGoals = new ArrayList<>();
+        in.readList(subGoals, SubGoal.class.getClassLoader());
     }
 
     public static final Creator<Goal> CREATOR = new Creator<Goal>() {
@@ -49,14 +50,14 @@ public class Goal implements Parcelable {
         }
     };
 
-    public int getGoalProgress() {
+    public String getGoalProgress() {
         int nrOfTaskFinished = 0;
         for (SubGoal sb : subGoals) {
             if (sb.isFinished()) {
                 nrOfTaskFinished++;
             }
         }
-        return nrOfTaskFinished * 100 / subGoals.size();
+        return String.format("%d/%d tasks finished", nrOfTaskFinished, subGoals.size());
     }
 
     public void addSubGoal(SubGoal subGoal) {
@@ -99,6 +100,6 @@ public class Goal implements Parcelable {
         dest.writeInt(goalPeriod);
         dest.writeString(goalTitle);
         dest.writeString(goalDescription);
-        dest.writeParcelableArray(subGoals.toArray(new SubGoal[subGoals.size()]), flags);
+        dest.writeList(subGoals);
     }
 }

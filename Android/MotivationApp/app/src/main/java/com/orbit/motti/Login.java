@@ -31,11 +31,11 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getApplicationContext(), Home.class);
+                Intent i = new Intent(getApplicationContext(), GoalsActivity.class);
                 startActivity(i);
 
                 Profile p = new Profile(((EditText) findViewById(R.id.login_edit_text)).getText().toString());
-                Home.p = p;
+                GoalsActivity.p = p;
                 try {
                     p.loadFromDatabase();
                     Intent in = new Intent(getApplicationContext(), Spinner.class);
