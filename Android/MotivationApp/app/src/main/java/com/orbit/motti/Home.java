@@ -26,6 +26,15 @@ public class Home extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        Database d = new Database();
+        d.connectToDatabase(this);
+
+        TextView t = (TextView)findViewById(R.id.hl);
+
+        ProfileExample p = new ProfileExample("test");
+        p.loadFromDatabase();
+
+        t.setText(p.getUsername());
     }
 
     @Override
