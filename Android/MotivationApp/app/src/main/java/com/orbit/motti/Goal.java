@@ -1,12 +1,16 @@
 package com.orbit.motti;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Preslav Gerchev on 13.2.2016 г..
  */
-public class Goal {
+public class Goal implements Parcelable {
 
     private final String goalTitle;
     private final List<SubGoal> subGoals;
@@ -15,7 +19,7 @@ public class Goal {
     private int goalProgress;
     private int goalPeriod;
 
-    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan,int goalPeriod) {
+    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan, int goalPeriod) {
         this.goalTitle = goalTitle;
         this.goalDescription = goalDescription;
         this.subGoals = new ArrayList<>();
@@ -24,6 +28,44 @@ public class Goal {
         goalProgress = 0;
     }
 
+    protected Goal(Parcel in) {
+        reminderDaysSpan = in.readInt();
+        goalProgress = in.readInt();
+        goalPeriod = in.readInt();
+        goalTitle = in.readString();
+        goalDescription = in.readString();
+        subGoals = in.createTypedArrayList(SubGoal.CREATOR);
+    }
+
+    public static final Creator<Goal> CREATOR = new Creator<Goal>() {
+        @Override
+        public Goal createFromParcel(Parcel in) {
+            return new Goal(in);
+        }
+
+        @Override
+        public Goal[] newArray(int size) {
+            return new Goal[size];
+        }
+    };
+
+    public int getGoalProgress() {
+        int nrOfTaskFinished = 0;
+        for (SubGoal sb : subGoals) {
+            if (sb.isFinished()) {
+                nrOfTaskFinished++;
+            }
+        }
+        return nrOfTaskFinished * 100 / subGoals.size();
+    }
+
+    public void addSubGoal(SubGoal subGoal) {
+
+        if (this.subGoals.contains(subGoal)) {
+            return;
+        }
+        subGoals.add(subGoal);
+    }
 
     public List<SubGoal> getSubGoals() {
         return subGoals;
@@ -43,5 +85,20 @@ public class Goal {
 
     public int getGoalPeriod() {
         return goalPeriod;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(reminderDaysSpan);
+        dest.writeInt(goalProgress);
+        dest.writeInt(goalPeriod);
+        dest.writeString(goalTitle);
+        dest.writeString(goalDescription);
+        dest.writeParcelableArray(subGoals.toArray(new SubGoal[subGoals.size()]), flags);
     }
 }

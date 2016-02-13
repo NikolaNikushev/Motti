@@ -1,16 +1,19 @@
 package com.orbit.motti;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity {
-    private int lastDeletedPosition=-1;
+    private int lastDeletedPosition = -1;
     private Goal lastDeletedGoal;
     private RecyclerView mRecyclerView;
     private List<Goal> goals;
@@ -54,7 +57,24 @@ public class Home extends AppCompatActivity {
 
                             @Override
                             public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
-
+                                for (int position : reverseSortedPositions) {
+                                    lastDeletedPosition = position;
+                                    lastDeletedGoal = goalSwipeAdapter.getGoal(position);
+                                    goalSwipeAdapter.removeItem(position);
+                                    goalSwipeAdapter.notifyItemRemoved(position);
+                                }
+                                goalSwipeAdapter.notifyDataSetChanged();
+                                Snackbar.make(recyclerView, "Goal deleted", Snackbar.LENGTH_LONG)
+                                        .setAction("Undo", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (lastDeletedGoal != null && lastDeletedPosition != -1) {
+                                                    goalSwipeAdapter.addItem(lastDeletedGoal, lastDeletedPosition);
+                                                    lastDeletedGoal = null;
+                                                    lastDeletedPosition = -1;
+                                                }
+                                            }
+                                        }).show();
                             }
 
                             @Override
@@ -90,17 +110,16 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        Database database = new Database();
-        database.connectToDatabase(this);
+        //  Database database = new Database();
+        //  database.connectToDatabase(this);
         //Initialize the database, setting Database.Instance to the first created;
         Profile p = new Profile("test");
 
         try {
             p.loadFromDatabase();
-        }catch (InvalidClassException ex){
+        } catch (InvalidClassException ex) {
             //unable to load data from the database ( 0 records )
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             //invalid columns
         }
     }
@@ -184,7 +203,16 @@ public class Home extends AppCompatActivity {
 
     private void fillGoals() {
         for (int i = 0; i < 15; i++) {
-            Goal g = new Goal("I want to quit smoking "+i,getFillerText(), 4, 5);
+            Goal g = new Goal("I want to quit smoking " + i, getFillerText(), 4, 5);
+            SubGoal sg = new SubGoal("I want to not go out this Friday", 3);
+            sg.setIsFinished(true);
+            SubGoal sg1 = new SubGoal("I want to not go out this Friday", 3);
+            sg1.setIsFinished(true);
+            SubGoal sg2 = new SubGoal("I want to not go out this Friday", 3);
+            sg2.setIsFinished(false);
+            g.addSubGoal(sg);
+            g.addSubGoal(sg1);
+            g.addSubGoal(sg2);
             goals.add(g);
         }
     }
