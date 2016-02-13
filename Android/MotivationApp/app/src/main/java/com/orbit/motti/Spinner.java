@@ -90,17 +90,6 @@ public class Spinner extends AppCompatActivity {
 
         fortuneView.addFortuneItems(dis);
 
-        findViewById(R.id.btRandom).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Random ran = new Random();
-                int randomInt = ran.nextInt(fortuneView.getTotalItems());
-                //fortuneView.setSelectedItem((fortuneView.getSelectedIndex() == fortuneView.getTotalItems() - 1 ? 0 : fortuneView.getSelectedIndex() + 1));
-                //fortuneView.setSelectedItem((fortuneView.getSelectedIndex() == 0 ? fortuneView.getTotalItems() - 1 : fortuneView.getSelectedIndex() - 1));
-                fortuneView.setSelectedItem(randomInt);
-            }
-        });
-
 
 
 
