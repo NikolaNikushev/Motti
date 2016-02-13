@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/login_edit_text"
         android:hint="Username"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />

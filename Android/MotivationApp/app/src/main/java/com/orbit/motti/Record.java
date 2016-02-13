@@ -3,6 +3,7 @@ package com.orbit.motti;
 import android.database.Cursor;
 
 import java.io.InvalidClassException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -39,7 +40,7 @@ public abstract class Record {
                     }
             }
         }
-        Cursor data = Database.get(this, this.identifierColumn.getName() + " = " + this.identifierColumn.forQuery());
+        Cursor data = Database.get(this,this.identifierColumn.forQuery());
         if(!data.moveToFirst())
             throw new InvalidClassException("No data found for " + this.getClass().getName() + " with "+this.identifierColumn.getName()+" = " + this.setIdentifierColumn().getName());
         createFromDatabase(data);

@@ -34,7 +34,7 @@ public class Spinner extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Random ran = new Random();
-                int randomInt = ran.nextInt(50);
+                int randomInt = ran.nextInt(fortuneView.getTotalItems());
                 //fortuneView.setSelectedItem((fortuneView.getSelectedIndex() == fortuneView.getTotalItems() - 1 ? 0 : fortuneView.getSelectedIndex() + 1));
                 //fortuneView.setSelectedItem((fortuneView.getSelectedIndex() == 0 ? fortuneView.getTotalItems() - 1 : fortuneView.getSelectedIndex() - 1));
                 fortuneView.setSelectedItemMultiple(randomInt);
@@ -70,16 +70,16 @@ public class Spinner extends AppCompatActivity {
 //        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_menu_save), FortuneItem.HingeType.Fixed));
 
         // Create a numbered wheel with the values 0 to 9
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_0)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_1)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_2)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_3)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_4)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_5)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_6)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_7)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_8)));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.drawable.image_9)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.personal_question)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.question)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.achiv_cup)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.did_you_know)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.action)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.donation)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.coin_two)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.coin_three)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.achiv_cup)));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(),  R.mipmap.did_you_know)));
 
         // Create a wheel with colored text values
 //        dis.add(new FortuneItem(Color.BLACK, 1));
@@ -89,10 +89,6 @@ public class Spinner extends AppCompatActivity {
 //        dis.add(new FortuneItem(Color.MAGENTA, 1));
 
         fortuneView.addFortuneItems(dis);
-
-
-
-
 
     }
 }

@@ -27,7 +27,7 @@ public class Home extends AppCompatActivity {
     private List<Goal> goals;
     private TextView firstTimeTextView;
     private GoalAdapter goalSwipeAdapter;
-
+    public static Profile p;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
