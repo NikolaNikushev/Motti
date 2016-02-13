@@ -8,5 +8,12 @@
     android:layout_width="match_parent"
     android:id="@+id/goals_recycler_view"
     />
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/first_time_text_view"
+    android:visibility="gone"
+    android:layout_centerInParent="true"
+    android:gravity="center"
+    android:text="Looks like you don't have a goal set yet.\nSet one and get started!\nWhat are you waiting for?"/>
 </RelativeLayout>

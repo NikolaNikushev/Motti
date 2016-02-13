@@ -14,9 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.orbit.motti.Records.Profile;
-
-import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +26,14 @@ public class Home extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-     //   firstTimeTextView = (TextView) findViewById(R.id.first_time_text_view);
+        firstTimeTextView = (TextView) findViewById(R.id.first_time_text_view);
         goals = new ArrayList<>();
         fillGoals();
-     //   updateUI();
+        updateUI();
         mRecyclerView = (RecyclerView) findViewById(R.id.goals_recycler_view);
         goalSwipeAdapter = new GoalSwipeAdapter(goals, this);
         mRecyclerView.setAdapter(goalSwipeAdapter);
@@ -52,20 +48,6 @@ public class Home extends AppCompatActivity {
                 showDialog();
             }
         });
-
-        Database database = new Database();
-        database.connectToDatabase(this);
-        //Initialize the database, setting Database.Instance to the first created;
-        Profile p = new Profile("test");
-
-        try {
-            p.loadFromDatabase();
-        }catch (InvalidClassException ex){
-            //unable to load data from the database ( 0 records )
-        }
-        catch (Exception ex){
-            //invalid columns
-        }
     }
 
     private void updateUI() {
@@ -105,7 +87,7 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         goalDialog.dismiss();
-                        //     updateUI();
+                        updateUI();
                     }
                 });
 
@@ -126,7 +108,7 @@ public class Home extends AppCompatActivity {
                                     Integer.valueOf(goalPeriodText.getText().toString()));
                             goals.add(goal);
                             goalDialog.dismiss();
-                            //updateUI();
+                            updateUI();
                             goalSwipeAdapter.notifyDataSetChanged();
                         }
                     }
