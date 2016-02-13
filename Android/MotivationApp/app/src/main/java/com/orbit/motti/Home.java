@@ -30,12 +30,10 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-     //   firstTimeTextView = (TextView) findViewById(R.id.first_time_text_view);
+        firstTimeTextView = (TextView) findViewById(R.id.first_time_text_view);
         goals = new ArrayList<>();
         fillGoals();
-     //   updateUI();
+        updateUI();
         mRecyclerView = (RecyclerView) findViewById(R.id.goals_recycler_view);
         goalSwipeAdapter = new GoalSwipeAdapter(goals, this);
         mRecyclerView.setAdapter(goalSwipeAdapter);
@@ -89,7 +87,7 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         goalDialog.dismiss();
-                   //     updateUI();
+                        updateUI();
                     }
                 });
 
@@ -110,7 +108,7 @@ public class Home extends AppCompatActivity {
                                     Integer.valueOf(goalPeriodText.getText().toString()));
                             goals.add(goal);
                             goalDialog.dismiss();
-                            //updateUI();
+                            updateUI();
                             goalSwipeAdapter.notifyDataSetChanged();
                         }
                     }
