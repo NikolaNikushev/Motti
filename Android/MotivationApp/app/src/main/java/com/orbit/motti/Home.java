@@ -4,10 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,11 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity {
-
+    private int lastDeletedPosition=-1;
+    private Goal lastDeletedGoal;
     private RecyclerView mRecyclerView;
     private List<Goal> goals;
     private TextView firstTimeTextView;
-    private GoalSwipeAdapter goalSwipeAdapter;
+    private GoalAdapter goalSwipeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +39,48 @@ public class Home extends AppCompatActivity {
         fillGoals();
         updateUI();
         mRecyclerView = (RecyclerView) findViewById(R.id.goals_recycler_view);
-        goalSwipeAdapter = new GoalSwipeAdapter(goals, this);
+        goalSwipeAdapter = new GoalAdapter(goals, this);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(goalSwipeAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
 
+        SwipeableRecyclerViewTouchListener swipeTouchListener =
+                new SwipeableRecyclerViewTouchListener(mRecyclerView,
+                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                            @Override
+                            public boolean canSwipe(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    lastDeletedPosition = position;
+                                    lastDeletedGoal = goalSwipeAdapter.getGoal(position);
+                                    goalSwipeAdapter.removeItem(position);
+                                    goalSwipeAdapter.notifyItemRemoved(position);
+                                }
+                                goalSwipeAdapter.notifyDataSetChanged();
+                                Snackbar.make(recyclerView, "Goal deleted", Snackbar.LENGTH_LONG)
+                                        .setAction("Undo", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (lastDeletedGoal != null && lastDeletedPosition != -1) {
+                                                    goalSwipeAdapter.addItem(lastDeletedGoal, lastDeletedPosition);
+                                                    lastDeletedGoal = null;
+                                                    lastDeletedPosition = -1;
+                                                }
+                                            }
+                                        }).show();
+                            }
+                        });
+
+        mRecyclerView.addOnItemTouchListener(swipeTouchListener);
 
         FloatingActionButton addGoalFAB = (FloatingActionButton) findViewById(R.id.fab);
         addGoalFAB.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +158,7 @@ public class Home extends AppCompatActivity {
                         } else {
                             Goal goal = new Goal(
                                     goalTitleText.getText().toString(),
-                                    goalDescriptionText.getText().toString(),
+                                    getFillerText(),
                                     Integer.valueOf(goalRemindText.getText().toString()),
                                     Integer.valueOf(goalPeriodText.getText().toString()));
                             goals.add(goal);
@@ -136,6 +174,18 @@ public class Home extends AppCompatActivity {
         return goalDialog;
     }
 
+    private String getFillerText() {
+        return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                "Ut volutpat interdum interdum. Nulla laoreet lacus diam, vitae " +
+                "sodales sapien commodo faucibus. Vestibulum et feugiat enim. Donec " +
+                "lectus, feugiat eget ullamcorper vitae, ornare et sem. Fusce dapibus ipsum" +
+                " sed laoreet suscipit.";
+    }
+
     private void fillGoals() {
+        for (int i = 0; i < 15; i++) {
+            Goal g = new Goal("I want to quit smoking "+i,getFillerText(), 4, 5);
+            goals.add(g);
+        }
     }
 }
