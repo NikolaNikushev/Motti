@@ -22,14 +22,18 @@ public class Database {
         try {
             database.execSQL("Select * from Profile");
         }
-        catch (SQLException ex){
-            database.execSQL("CREATE TABLE profile (\n" +
-                    "\tusername VARCHAR(256) NOT NULL,\n" +
-                    "\tage_range VARCHAR(100),\n" +
-                    "\tcredits INT4,\n" +
-                    "\tCONSTRAINT profile_pk PRIMARY KEY (username),\n" +
-                    "\tCONSTRAINT FK_profile_age_group FOREIGN KEY (age_range) REFERENCES age_group(name) ON DELETE CASCADE ON UPDATE CASCADE\n" +
-                    ");");
+        catch (SQLException ex) {
+            try {
+                database.execSQL("CREATE TABLE profile (\n" +
+                        "\tusername VARCHAR(256) NOT NULL,\n" +
+                        "\tage_range VARCHAR(100),\n" +
+                        "\tcredits INT4,\n" +
+                        "\tCONSTRAINT profile_pk PRIMARY KEY (username),\n" +
+                        "\tCONSTRAINT FK_profile_age_group FOREIGN KEY (age_range) REFERENCES age_group(name) ON DELETE CASCADE ON UPDATE CASCADE\n" +
+                        ");");
+            } catch (SQLException exc) {
+                return;
+            }
             database.execSQL("Insert into profile(username)values('test')");
         }
     }
@@ -39,7 +43,7 @@ public class Database {
         return executeWithResult(sql);
     }
 
-    public static Cursor executeWithResult(String sql){
-        return database.query(sql, null, null, null, null, null, null);
+    public static Cursor executeWithResult(String sql) {
+        return database.rawQuery(sql, null);
     }
 }

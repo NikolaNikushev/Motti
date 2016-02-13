@@ -8,7 +8,7 @@ import android.database.Cursor;
 public class ProfileExample extends Record {
     @Override
     protected IdentifierColumn setIdentifierColumn() {
-        return new IdentifierColumn(this, "ID") {
+        return new IdentifierColumn(this, "username") {
             @Override
             public Object getValue() {
                 return ((ProfileExample)this.getRecord()).getUsername();
@@ -25,6 +25,7 @@ public class ProfileExample extends Record {
 
     @Override
     protected void createFromDatabase(Cursor data) {
+        data.moveToNext();
         this.userName = data.getString(0) + " From Database";
     }
 

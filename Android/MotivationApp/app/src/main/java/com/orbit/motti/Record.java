@@ -20,7 +20,7 @@ public abstract class Record {
 
     public void loadFromDatabase()
     {
-        Cursor data = Database.get(this, this.identifierColumn.getName() + " = " + this.identifierColumn.getValue());
+        Cursor data = Database.get(this, this.identifierColumn.getName() + " = '" + this.identifierColumn.getValue()+"'");
         //if(data.length == 0) => no element to create
         createFromDatabase(data);
         isCreated = true;

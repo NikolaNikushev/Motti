@@ -9,7 +9,8 @@ public abstract class IdentifierColumn {
     private  Record record;
     public  Record getRecord(){return  this.record;};
 
-    public  IdentifierColumn(Record record, String name){
+    public  IdentifierColumn(Record record, String name) {
+        this.record = record;
         this.name = name;
     }
 
