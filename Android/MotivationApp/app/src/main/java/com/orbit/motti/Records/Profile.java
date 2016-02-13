@@ -5,7 +5,6 @@ import android.provider.ContactsContract;
 
 import com.orbit.motti.Database;
 import com.orbit.motti.IdentifierColumn;
-import com.orbit.motti.ProfileExample;
 import com.orbit.motti.Record;
 
 import java.util.ArrayList;
@@ -78,13 +77,17 @@ public class Profile extends Record {
         return new IdentifierColumn(this, "username") {
             @Override
             public Object getValue() {
-                return ((ProfileExample) this.getRecord()).getUsername();
+                return ((Profile) this.getRecord()).getUsername();
             }
 
             @Override
             public void setValue(Object value) {
-                ((ProfileExample) this.getRecord()).setUsername((String) value);
+                ((Profile) this.getRecord()).setUsername((String) value);
             }
         };
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
