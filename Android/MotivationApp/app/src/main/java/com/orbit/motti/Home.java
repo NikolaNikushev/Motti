@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Home extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private List<Goal> goals;
+    private TextView firstTimeTextView;
     private GoalSwipeAdapter goalSwipeAdapter;
 
     @Override
@@ -30,12 +32,12 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+     //   firstTimeTextView = (TextView) findViewById(R.id.first_time_text_view);
         goals = new ArrayList<>();
         fillGoals();
-
+     //   updateUI();
         mRecyclerView = (RecyclerView) findViewById(R.id.goals_recycler_view);
-        goalSwipeAdapter = new GoalSwipeAdapter(goals);
+        goalSwipeAdapter = new GoalSwipeAdapter(goals, this);
         mRecyclerView.setAdapter(goalSwipeAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
@@ -50,13 +52,25 @@ public class Home extends AppCompatActivity {
         });
     }
 
+    private void updateUI() {
+
+        if (goals.size() == 0) {
+            firstTimeTextView.setVisibility(View.VISIBLE);
+        } else {
+            firstTimeTextView.setVisibility(View.GONE);
+        }
+    }
+
     private void showDialog() {
         createDialog().show();
     }
 
     private AlertDialog createDialog() {
         final View dialogView = getLayoutInflater().inflate(R.layout.goal_dialog, null);
-        final EditText goalText = (EditText) dialogView.findViewById(R.id.goal_title_edit_text);
+        final EditText goalTitleText = (EditText) dialogView.findViewById(R.id.goal_title_edit_text);
+        final EditText goalDescriptionText = (EditText) dialogView.findViewById(R.id.goal_description_edit_text);
+        final EditText goalRemindText = (EditText) dialogView.findViewById(R.id.goal_remind_edit_text);
+        final EditText goalPeriodText = (EditText) dialogView.findViewById(R.id.goal_period_edit_text);
 
         final AlertDialog goalDialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -75,21 +89,28 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         goalDialog.dismiss();
+                   //     updateUI();
                     }
                 });
 
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (goalText.getText().length() == 0) {
+                        if (goalTitleText.getText().length() == 0) {
                             Toast.makeText(
                                     dialogView.getContext(),
                                     "Title can't be empty!",
                                     Toast.LENGTH_SHORT)
                                     .show();
                         } else {
-                            goals.add(new Goal(goalText.getText().toString(),"",2));
+                            Goal goal = new Goal(
+                                    goalTitleText.getText().toString(),
+                                    goalDescriptionText.getText().toString(),
+                                    Integer.valueOf(goalRemindText.getText().toString()),
+                                    Integer.valueOf(goalPeriodText.getText().toString()));
+                            goals.add(goal);
                             goalDialog.dismiss();
+                            //updateUI();
                             goalSwipeAdapter.notifyDataSetChanged();
                         }
                     }
@@ -101,9 +122,5 @@ public class Home extends AppCompatActivity {
     }
 
     private void fillGoals() {
-        for (int i = 0; i < 15; i++) {
-            Goal g = new Goal("you can do it!","",2);
-            goals.add(g);
-        }
     }
 }

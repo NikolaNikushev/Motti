@@ -13,19 +13,17 @@ public class Goal {
     private String goalDescription;
     private int reminderDaysSpan;
     private int goalProgress;
+    private int goalPeriod;
 
-    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan) {
+    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan,int goalPeriod) {
         this.goalTitle = goalTitle;
         this.goalDescription = goalDescription;
         this.subGoals = new ArrayList<>();
         this.reminderDaysSpan = reminderDaysSpan;
+        this.goalPeriod = goalPeriod;
         goalProgress = 0;
     }
 
-    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan, int goalProgress) {
-        this(goalTitle, goalDescription, reminderDaysSpan);
-        this.goalProgress = goalProgress;
-    }
 
     public List<SubGoal> getSubGoals() {
         return subGoals;
@@ -41,5 +39,9 @@ public class Goal {
 
     public int getReminderDaysSpan() {
         return reminderDaysSpan;
+    }
+
+    public int getGoalPeriod() {
+        return goalPeriod;
     }
 }
