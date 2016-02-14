@@ -18,29 +18,28 @@ public class Motivation extends Record {
     private String image;
     public String getImage() {return image;}
 
+    private String type;
+    public String getType(){return type;}
+
+    private String addiction;
+    public String getAddiction(){return addiction;}
+
     @Override
     public String getTableName() {
         return "Motivation";
     }
 
     @Override
-    protected void createFromDatabase(Cursor data) {
-        int descriptionIndex = data.getColumnIndex("description");
-        this.description = data.getString(descriptionIndex);
+    public void loadFromCursor(ExtendedCursor data) {
+        this.description = data.getString("description");
 
-        int imageIndex = data.getColumnIndex("image");
-        this.image = data.getString(imageIndex);
+        this.image = data.getString("image");
 //todo is it int ??
-        int isPositiveIndex = data.getColumnIndex("is_positive");
-        this.isPositive = data.getInt(isPositiveIndex) == 0;
-    }
+        this.isPositive = data.getBoolean("is_positive");
 
-    @Override
-    protected void copyFrom(Record data) {
-        Motivation copy = (Motivation)data;
-        this.description = copy.description;
-        this.image = copy.image;
-        this.isPositive = copy.isPositive;
+        this.type = data.getString("motivation_type");
+
+        this.addiction = data.getString("addiction_type");
     }
 
     @Override

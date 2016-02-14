@@ -21,8 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.orbit.motti.Records.Addiction;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -46,12 +44,12 @@ public class Spinner extends AppCompatActivity {
                 if (!firstRun) {
                     TypeOfFortune f = fortuneView.getItem(selected).getFortune();
                     Random r = new Random();
-                    List<Addiction> ads = GoalsActivity.p.addictions;
+                    List<String> ads = GoalsActivity.p.addictions;
                     String name = "";
                     if (ads.size() > 0) {
                         int number = r.nextInt(ads.size());
-                        Addiction add = GoalsActivity.p.addictions.get(number);
-                        name = add.getName();
+                        String add = GoalsActivity.p.addictions.get(number);
+                        name = add;
                     }
                     Database database = new Database(context);
                     int currentCoints = GoalsActivity.p.getCredits();
