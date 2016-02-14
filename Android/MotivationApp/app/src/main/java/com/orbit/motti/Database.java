@@ -50,7 +50,6 @@ public class Database {
                 "\tdate_from DATE(2000000000),\n" +
                 "\tDate_to DATE(2000000000),\n" +
                 "\treminder_frequency INTEGER,\n" +
-                "\tparent_goal INTEGER,\n" +
                 "\tID INTEGER,\n" +
                 "\tdate_finished DATE(2000000000),\n" +
                 "\tAddiction_type VARCHAR(256),\n" +
@@ -117,6 +116,10 @@ public class Database {
     public static ExtendedCursor get(Record record, String whereStatement) throws IndexOutOfBoundsException{
         String sql = "Select * from " + record.getTableName() + " Where " + whereStatement;
         return executeWithResult(sql);
+    }
+
+    public  static  void insert(String table, String keys, String values){
+        executeSQL("Insert into " + table + "(" + keys + ")" + "Values ("+values+")");
     }
 
     public static void executeSQL(String sql){

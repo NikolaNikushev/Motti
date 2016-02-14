@@ -178,7 +178,7 @@ public class Goal extends Record implements Parcelable {
         this.profile = Profile.FindOrCreate(data.getString("profile"));
 
         //todo check format
-        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
         try {
             this.dateFrom = format.parse(data.getString("date_from"));
         }catch (Exception ex){}
