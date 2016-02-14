@@ -53,7 +53,8 @@ public class Goal extends Record implements Parcelable {
         return (int)(100 * ((float)done/subGoals.size()));
     }
 
-    private int ID;
+    static int currentId = 0;
+    private int ID = ++currentId;
     public int getID() {
         return ID;
     }
@@ -155,8 +156,6 @@ public class Goal extends Record implements Parcelable {
         dest.writeString(goalDescription);
 
         dest.writeList(subGoals);
-
-
     }
 
     @Override

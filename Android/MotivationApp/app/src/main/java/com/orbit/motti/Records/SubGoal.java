@@ -14,7 +14,8 @@ public class SubGoal extends Record implements Parcelable {
     private  String subGoalTitle;
     private int subGoalTimePeriod;
     private boolean isFinished;
-    private int ID;
+    static int currentId = 0;
+    private int ID = ++currentId;
     public int getID(){return ID;}
     public void setID(int value){this.ID = value;}
 
