@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.orbit.motti.Records.Goal;
 import com.orbit.motti.Records.Profile;
 
@@ -36,6 +40,11 @@ public class GoalsActivity extends AppCompatActivity {
     private TextView firstTimeTextView;
     private GoalAdapter goalSwipeAdapter;
     public static Profile p;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +112,11 @@ public class GoalsActivity extends AppCompatActivity {
                                                     int currentCoints = p.getCredits();
 
                                                     database.executeSQL("Update profile set credits=" + (currentCoints - 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                                    try {
+                                                        p.loadFromDatabase();
+                                                    } catch (InvalidClassException e) {
+                                                        e.printStackTrace();
+                                                    }
                                                 }
                                             }
                                         }).show();
@@ -140,6 +154,21 @@ public class GoalsActivity extends AppCompatActivity {
                                                     goalSwipeAdapter.addItem(lastDeletedGoal, lastDeletedPosition);
                                                     lastDeletedGoal = null;
                                                     lastDeletedPosition = -1;
+                                                    Database database = new Database(getApplicationContext());
+                                                    database.connectToDatabase();
+                                                    try {
+                                                        p.loadFromDatabase();
+                                                    } catch (InvalidClassException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    int currentCoints = p.getCredits();
+
+                                                    database.executeSQL("Update profile set credits=" + (currentCoints - 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                                    try {
+                                                        p.loadFromDatabase();
+                                                    } catch (InvalidClassException e) {
+                                                        e.printStackTrace();
+                                                    }
                                                 }
                                             }
                                         }).show();
@@ -161,6 +190,9 @@ public class GoalsActivity extends AppCompatActivity {
         //  database.connectToDatabase(this);
         //Initialize the database, setting Database.Instance to the first created;
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void updateUI() {
@@ -322,5 +354,45 @@ public class GoalsActivity extends AppCompatActivity {
             }
             goals.add(g);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Goals Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.orbit.motti/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Goals Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.orbit.motti/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }
