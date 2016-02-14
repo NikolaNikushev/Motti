@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.orbit.motti.Records.Goal;
 import com.orbit.motti.Records.Profile;
 
+import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +70,21 @@ public class GoalsActivity extends AppCompatActivity {
                                     goalSwipeAdapter.notifyItemRemoved(position);
                                 }
                                 goalSwipeAdapter.notifyDataSetChanged();
+                                Database database = new Database(getApplicationContext());
+                                database.connectToDatabase();
+                                try {
+                                    p.loadFromDatabase();
+                                } catch (InvalidClassException e) {
+                                    e.printStackTrace();
+                                }
+                                int currentCoints = p.getCredits();
+
+                                database.executeSQL("Update profile set credits=" + (currentCoints + 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                try {
+                                    p.loadFromDatabase();
+                                } catch (InvalidClassException e) {
+                                    e.printStackTrace();
+                                }
                                 Snackbar.make(recyclerView, "Goal deleted", Snackbar.LENGTH_LONG)
                                         .setAction("Undo", new View.OnClickListener() {
                                             @Override
@@ -77,6 +93,16 @@ public class GoalsActivity extends AppCompatActivity {
                                                     goalSwipeAdapter.addItem(lastDeletedGoal, lastDeletedPosition);
                                                     lastDeletedGoal = null;
                                                     lastDeletedPosition = -1;
+                                                    Database database = new Database(getApplicationContext());
+                                                    database.connectToDatabase();
+                                                    try {
+                                                        p.loadFromDatabase();
+                                                    } catch (InvalidClassException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    int currentCoints = p.getCredits();
+
+                                                    database.executeSQL("Update profile set credits=" + (currentCoints - 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
                                                 }
                                             }
                                         }).show();
@@ -89,6 +115,21 @@ public class GoalsActivity extends AppCompatActivity {
                                     lastDeletedGoal = goalSwipeAdapter.getGoal(position);
                                     goalSwipeAdapter.removeItem(position);
                                     goalSwipeAdapter.notifyItemRemoved(position);
+                                }
+                                Database database = new Database(getApplicationContext());
+                                database.connectToDatabase();
+                                try {
+                                    p.loadFromDatabase();
+                                } catch (InvalidClassException e) {
+                                    e.printStackTrace();
+                                }
+                                int currentCoints = p.getCredits();
+
+                                database.executeSQL("Update profile set credits=" + (currentCoints + 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                try {
+                                    p.loadFromDatabase();
+                                } catch (InvalidClassException e) {
+                                    e.printStackTrace();
                                 }
                                 goalSwipeAdapter.notifyDataSetChanged();
                                 Snackbar.make(recyclerView, "Goal deleted", Snackbar.LENGTH_LONG)
@@ -132,7 +173,7 @@ public class GoalsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_goals, menu);
@@ -173,7 +214,7 @@ public class GoalsActivity extends AppCompatActivity {
                                 dialogButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                       Toast.makeText(context, "Form submitted succsfully. Our expert will contact you as soon as possible.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(context, "Form submitted succsfully. Our expert will contact you as soon as possible.", Toast.LENGTH_LONG).show();
                                         dialog.dismiss();
                                     }
                                 });
