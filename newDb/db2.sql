@@ -1,0 +1,40 @@
+BEGIN TRANSACTION;
+CREATE TABLE `WheelOfFortune` (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`wheel_slice`	TEXT NOT NULL,
+	`description`	TEXT NOT NULL,
+	`coins` 		INT
+);
+CREATE TABLE "User" (
+	`name`	TEXT NOT NULL UNIQUE,
+	`coins`	INTEGER NOT NULL,
+	`date_created`	TEXT NOT NULL,
+	PRIMARY KEY(name)
+	
+);CREATE TABLE `Goal` (
+	`title`	TEXT NOT NULL UNIQUE,
+	`description`	TEXT,
+	`end_date`	TEXT NOT NULL,
+	PRIMARY KEY(title)
+);
+CREATE TABLE `Subgoals` (
+	`name`	TEXT NOT NULL UNIQUE,
+	`end_date`	TEXT NOT NULL,
+	`finished`	bool NOT NULL,
+	PRIMARY KEY(name)
+);
+CREATE TABLE `USER_GOALS` (
+	`name`	TEXT,
+	`goal`	TEXT,
+	PRIMARY KEY(name,goal)
+	FOREIGN KEY (`name`) REFERENCES User(`name`)		ON DELETE CASCADE ON UPDATE CASCADE
+	FOREIGN KEY(`goal`) REFERENCES Goal(`title`)		ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE `GOALS_SUBGOALS` (
+	`goal`	TEXT,
+	`subgoal`	TEXT,
+	PRIMARY KEY(`goal`, `subgoal`)
+	FOREIGN KEY (`goal`) REFERENCES Goal(`title`)		ON DELETE CASCADE ON UPDATE CASCADE
+	FOREIGN KEY(`subgoal`) REFERENCES Subgoal(`name`) 	ON DELETE CASCADE ON UPDATE CASCADE
+);
+COMMIT;
