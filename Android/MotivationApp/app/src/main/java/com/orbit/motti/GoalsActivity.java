@@ -1,6 +1,9 @@
 package com.orbit.motti;
 
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +36,9 @@ import com.orbit.motti.Records.SubGoal;
 import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class GoalsActivity extends AppCompatActivity {
     private int lastDeletedPosition = -1;
@@ -334,9 +340,63 @@ public class GoalsActivity extends AppCompatActivity {
                                     Integer.valueOf(goalPeriodText.getText().toString()),
                                     addictionTypes[result[0]]);
                             goals.add(goal);
+                            final Goal g = goal;
                             goalDialog.dismiss();
                             updateUI();
                             goalSwipeAdapter.notifyDataSetChanged();
+                            ScheduledExecutorService worker =
+                                    Executors.newSingleThreadScheduledExecutor();
+
+                            Runnable task = new Runnable() {
+                                public void run() {
+                                    NotificationManager manager;
+
+                                    Intent intent = new Intent(getApplicationContext(), GoalsActivity.class);
+                                    manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                    PendingIntent pendingIntent = PendingIntent.getActivity(GoalsActivity.this, 1, intent, 0);
+
+                                    Notification.Builder builder = new Notification.Builder(GoalsActivity.this);
+
+                                    builder.setAutoCancel(false);
+                                    builder.setTicker(g.getGoalPeriod() + " days left: " + g.getGoalTitle());
+                                    builder.setContentTitle(getString(R.string.app_name));
+                                    builder.setContentText("Reminder for " + g.getGoalTitle());
+                                    builder.setSmallIcon(R.mipmap.ic_launcher);
+                                    builder.setContentIntent(pendingIntent);
+                                    builder.setOngoing(true);
+                                    builder.setSubText("Progress: " + g.progress() + "/" + g.getSubGoals().size() + "\n" + g.getGoalDescription());   //API level 16
+                                    builder.setNumber(g.getID());
+                                    builder.build();
+                                    Notification myNotication;
+                                    myNotication = builder.getNotification();
+                                    manager.notify(11, myNotication);
+                                }
+                            };
+                            worker.schedule(task, 5, TimeUnit.SECONDS);
+
+
+
+
+            /*
+            //API level 8
+            Notification myNotification8 = new Notification(R.drawable.ic_launcher, "this is ticker text 8", System.currentTimeMillis());
+
+            Intent intent2 = new Intent(MainActivity.this, SecActivity.class);
+            PendingIntent pendingIntent2 = PendingIntent.getActivity(getApplicationContext(), 2, intent2, 0);
+            myNotification8.setLatestEventInfo(getApplicationContext(), "API level 8", "this is api 8 msg", pendingIntent2);
+            manager.notify(11, myNotification8);
+            */
+
+
+
+
+                 /*   btnClear.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View arg0) {
+                            manager.cancel(11);
+                        }
+                    });*/
                         }
                     }
                 });
