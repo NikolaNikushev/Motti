@@ -1,23 +1,28 @@
-package com.orbit.motti;
+package com.orbit.motti.Records;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.orbit.motti.IdentifierColumn;
+import com.orbit.motti.Record;
+
 /**
  * Created by Preslav Gerchev on 13.2.2016 г..
  */
-public class SubGoal implements Parcelable {
+public class SubGoal extends Record implements Parcelable {
 
     private  String subGoalTitle;
     private int subGoalTimePeriod;
     private boolean isFinished;
+    private int ID;
+    public int getID(){return ID;}
+    public void setID(int value){this.ID = value;}
 
     public SubGoal(String goalTitle, int subGoalTimePeriod) {
         this.subGoalTimePeriod = subGoalTimePeriod;
         this.subGoalTitle = goalTitle;
         this.isFinished = false;
     }
-
 
     protected SubGoal(Parcel in) {
         subGoalTimePeriod = in.readInt();
@@ -63,5 +68,33 @@ public class SubGoal implements Parcelable {
         dest.writeInt(subGoalTimePeriod);
         dest.writeString(subGoalTitle);
         dest.writeByte((byte) (isFinished ? 1 : 0));
+    }
+
+    @Override
+    public String getTableName() {
+        return "SubGoal";
+    }
+
+    @Override
+    protected void loadFromCursor(ExtendedCursor data) {
+        this.setID(data.getInt("id"));
+        subGoalTimePeriod = data.getInt("time_period");
+        subGoalTitle = data.getString("title");
+        isFinished = data.getBoolean("is_finished");
+    }
+
+    @Override
+    protected IdentifierColumn setIdentifierColumn() {
+        return new IdentifierColumn(this, "id") {
+            @Override
+            public Object getValue() {
+                return ((SubGoal)this.getRecord()).getID();
+            }
+
+            @Override
+            public void setValue(Object value) {
+                ((SubGoal)this.getRecord()).setID((int)value);
+            }
+        };
     }
 }

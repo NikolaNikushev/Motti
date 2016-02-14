@@ -32,6 +32,7 @@ public class Database {
         executeSQL("Drop table Goal");
         executeSQL("Drop table addiction_type");
         executeSQL("Drop table personal_question_answer");
+        executeSQL("Drop table Sub_Goal");
     }
 
     public static void connectToDatabase(){
@@ -91,6 +92,16 @@ public class Database {
                 ");\n" +
                 "\n" +
                 "CREATE INDEX sqlite_autoindex_Personal_Question_Answer_1 ON Personal_Question_Answer (motivation_id,answer);\n");
+
+        CreateTable("Sub_Goal", "CREATE TABLE Sub_Goal (\n" +
+                "\tID INTEGER,\n" +
+                "\tTitle VARCHAR(256),\n" +
+                "\tparent_goal INTEGER,\n" +
+                "\tis_finished BOOL,\n" +
+                "\ttime_period INTEGER,\n" +
+                "\tCONSTRAINT sub_goal_pk PRIMARY KEY (ID),\n" +
+                "\tCONSTRAINT FK_Sub_Goal_Goal FOREIGN KEY (parent_goal) REFERENCES Goal(ID) ON DELETE CASCADE ON UPDATE CASCADE\n" +
+                ");\n");
     }
 
     static  void CreateTable(String name, String sqlIfNotExisting){

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.orbit.motti.Records.SubGoal;
+
 import java.util.List;
 
 /**

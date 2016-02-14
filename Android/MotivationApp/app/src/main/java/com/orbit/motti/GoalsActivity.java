@@ -27,6 +27,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.orbit.motti.Records.Goal;
 import com.orbit.motti.Records.Profile;
+import com.orbit.motti.Records.SubGoal;
 
 import java.io.InvalidClassException;
 import java.util.ArrayList;

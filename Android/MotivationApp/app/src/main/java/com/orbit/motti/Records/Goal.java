@@ -2,12 +2,13 @@ package com.orbit.motti.Records;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.DateUtils;
 
 import com.orbit.motti.Database;
 import com.orbit.motti.IdentifierColumn;
 import com.orbit.motti.Record;
-import com.orbit.motti.SubGoal;
 
+import java.io.InvalidClassException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,9 @@ import java.util.Locale;
  * Created by Preslav Gerchev on 13.2.2016 г..
  */
 public class Goal extends Record implements Parcelable {
+
+    private static  List<Goal> goalCache = new ArrayList<>();
+
     private String goalTitle;
     private List<SubGoal> subGoals;
     private String goalDescription;
@@ -27,8 +31,6 @@ public class Goal extends Record implements Parcelable {
     private Date dateFinished;
 
     private int reminderDaysSpan;
-    private int goalProgress;
-    private int goalPeriod;
 
     private String addiction;
     public String getAddiction(){return this.addiction;}
@@ -36,6 +38,20 @@ public class Goal extends Record implements Parcelable {
     private Profile profile;
     public Profile getProfile(){return profile;}
     public Profile getOwner(){return  getProfile();}
+
+    public boolean isFinished(){return dateFinished != null;}
+    public int daysPeriod(){
+        return (int)((dateTo.getTime()-dateFrom.getTime()) / DateUtils.DAY_IN_MILLIS);
+    }
+    public int progress(){
+        int done = 0;
+        for (int i = 0; i < subGoals.size();i++){
+            if(subGoals.get(i).isFinished())
+                done += 1;
+        }
+
+        return (int)(100 * ((float)done/subGoals.size()));
+    }
 
     private int ID;
     public int getID() {
@@ -46,20 +62,25 @@ public class Goal extends Record implements Parcelable {
         this.ID = ID;
     }
 
-    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan, int goalPeriod) {
+    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan, int goalPeriodDays) {
         this.goalTitle = goalTitle;
         this.goalDescription = goalDescription;
         this.subGoals = new ArrayList<>();
         this.reminderDaysSpan = reminderDaysSpan;
-        this.goalPeriod = goalPeriod;
-        goalProgress = 0;
+        this.dateFrom = new Date();
+        this.dateTo = new Date(dateFrom.getTime()+DateUtils.DAY_IN_MILLIS * goalPeriodDays);
+
+        goalCache.add(this);
     }
 
     protected Goal(Parcel in) {
         reminderDaysSpan = in.readInt();
-        goalProgress = in.readInt();
-        goalPeriod = in.readInt();
+        dateFrom = new Date(in.readLong());
+        dateTo = new Date(in.readLong());
+        dateFinished = new Date(in.readLong());
         goalTitle = in.readString();
+        addiction = in.readString();
+        profile = Profile.FindOrCreate(in.readString());
         goalDescription = in.readString();
         subGoals = new ArrayList<>();
         in.readList(subGoals, SubGoal.class.getClassLoader());
@@ -112,7 +133,7 @@ public class Goal extends Record implements Parcelable {
     }
 
     public int getGoalPeriod() {
-        return goalPeriod;
+        return daysPeriod();
     }
 
     @Override
@@ -123,10 +144,14 @@ public class Goal extends Record implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(reminderDaysSpan);
-        dest.writeInt(goalProgress);
-        dest.writeInt(goalPeriod);
+        dest.writeLong(dateFrom.getTime());
+        dest.writeLong(dateTo.getTime());
+        dest.writeLong(dateFinished.getTime());
         dest.writeString(goalTitle);
+        dest.writeString(addiction);
+        dest.writeString(profile.getUsername());
         dest.writeString(goalDescription);
+
         dest.writeList(subGoals);
     }
 
@@ -137,12 +162,15 @@ public class Goal extends Record implements Parcelable {
 
     @Override
     public void loadFromCursor(ExtendedCursor data) {
-        reminderDaysSpan = data.getInt("reminder_days");
+        this.setID(data.getInt("id"));
+        reminderDaysSpan = data.getInt("reminder_frequency");
         goalDescription = data.getString("description");
+        this.reminderDaysSpan = data.getInt("reminder_frequency");
         this.addiction = data.getString("addiction");
         this.goalTitle = data.getString("title");
         this.profile = Profile.FindOrCreate(data.getString("profile"));
 
+        //todo check format
         SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
         try {
             this.dateFrom = format.parse(data.getString("date_from"));
@@ -153,17 +181,16 @@ public class Goal extends Record implements Parcelable {
         try {
             this.dateFinished = format.parse(data.getString("date_finished"));
         }catch (Exception ex){}
-        //todo frequency // reminder_frequency
-        //todo parent_goal
 
-        ExtendedCursor subGoalsCursor = Database.Instance.executeWithResult("Select * from " + this.getTableName() + " where parent_goal = " + this.getID());
+        SubGoal subGoal = new SubGoal(null,0);
+
+        ExtendedCursor subGoalsCursor = Database.Instance.executeWithResult("Select * from " + subGoal.getTableName() + " where parent_goal = " + this.getID());
 
         while(subGoalsCursor.moveToNext())
         {
-            Goal subGoal = new Goal(null);
+            subGoal = new SubGoal(null,0);
             subGoal.loadFromCursor(subGoalsCursor);
-            //todo SubGoal
-            //this.addSubGoal(subGoal);
+            this.addSubGoal(subGoal);
         }
     }
 
@@ -180,5 +207,18 @@ public class Goal extends Record implements Parcelable {
                 ((Goal)this.getRecord()).setID((int)value);
             }
         };
+    }
+
+    public static Goal FindOrCreate(int id) {
+        for (Goal i : goalCache) {
+            if(i.ID == id && i.getIsCreated())
+                return i;
+        }
+        Goal g = new Goal(null,null,0,0);
+        g.setID(id);
+        try {
+            g.loadFromDatabase();
+        }catch (InvalidClassException ex){}
+        return g;
     }
 }

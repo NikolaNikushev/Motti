@@ -9,13 +9,13 @@ import com.orbit.motti.Record;
  * Created by Vader on 13/02/2016.
  */
 public class Motivation extends Record {
-    private String ID;
+    private int ID;
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
@@ -41,14 +41,12 @@ public class Motivation extends Record {
 
     @Override
     public void loadFromCursor(ExtendedCursor data) {
+        this.setID(data.getInt("id"));
         this.description = data.getString("description");
-
         this.image = data.getString("image");
 //todo is it int ??
         this.isPositive = data.getBoolean("is_positive");
-
         this.type = data.getString("motivation_type");
-
         this.addiction = data.getString("addiction");
     }
 
@@ -62,7 +60,7 @@ public class Motivation extends Record {
 
             @Override
             public void setValue(Object value) {
-                ((Motivation)this.getRecord()).setID((String) value);
+                ((Motivation)this.getRecord()).setID((int) value);
             }
         };
     }
