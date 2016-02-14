@@ -72,7 +72,7 @@ public class SubGoal extends Record implements Parcelable {
 
     @Override
     public String getTableName() {
-        return "SubGoal";
+        return "Sub_Goal";
     }
 
     @Override

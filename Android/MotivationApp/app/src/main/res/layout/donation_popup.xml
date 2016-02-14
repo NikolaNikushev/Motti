@@ -13,7 +13,7 @@
         android:layout_alignParentEnd="true" />
 
     <ImageView
-        android:layout_width="200px"
+        android:layout_width="100px"
         android:layout_height="300px"
         android:src="@mipmap/sponsor0"
         android:background="@drawable/image_bordor"
@@ -24,7 +24,7 @@
         android:layout_marginTop="51dp" />
 
     <ImageView
-        android:layout_width="200px"
+        android:layout_width="100px"
         android:layout_height="300px"
         android:background="@drawable/image_bordor"
         android:id="@+id/sponsor2"
@@ -36,7 +36,7 @@
         android:layout_centerHorizontal="true" />
 
     <ImageView
-        android:layout_width="200px"
+        android:layout_width="100px"
         android:layout_height="300px"
         android:id="@+id/sponsor3"
         android:src="@mipmap/sponsor3"

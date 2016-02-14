@@ -85,7 +85,7 @@ public class Spinner extends AppCompatActivity {
                                 coinsWon = 3;
                                 break;
                             case Did_you_know:
-                                name += "-know";
+                                name += "good-to-know";
                                 break;
                             case Donation:
                                 name = "Donation";
@@ -106,7 +106,7 @@ public class Spinner extends AppCompatActivity {
                                 image.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Toast.makeText(context, "Keep up the good work and good luck for next time!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(context, "We thank you for the support! Keep up the good work and good luck!", Toast.LENGTH_LONG).show();
                                         dialog.dismiss();
                                     }
                                 });
@@ -114,7 +114,7 @@ public class Spinner extends AppCompatActivity {
                                 image2.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Toast.makeText(context, "Keep up the good work and good luck for next time!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(context, "We thank you for the support! Keep up the good work and good luck!", Toast.LENGTH_LONG).show();
                                         dialog.dismiss();
                                     }
                                 });
@@ -122,7 +122,7 @@ public class Spinner extends AppCompatActivity {
                                 image3.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Toast.makeText(context, "Keep up the good work and good luck for next time!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(context, "We thank you for the support! Keep up the good work and good luck!", Toast.LENGTH_LONG).show();
                                         dialog.dismiss();
                                     }
                                 });
@@ -163,7 +163,7 @@ public class Spinner extends AppCompatActivity {
 
 
                         } else {
-                            Cursor a = database.executeWithResult("Select * from motivation where addiction='" + name + "'");
+                            Cursor a = database.executeWithResult("Select * from motivation where motivation_type='" + name + "'");
 
 
                             if (a.moveToFirst()) {
