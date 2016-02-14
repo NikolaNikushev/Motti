@@ -36,11 +36,9 @@ public class Goal extends Record implements Parcelable {
     private String addiction;
     public String getAddiction(){return this.addiction;}
 
-    private Profile profile;
-    public Profile getProfile(){return profile;}
-    public Profile getOwner(){return  getProfile();}
 
-    public boolean isFinished(){return dateFinished != null;}
+
+    public boolean isFinished(){return dateFinished != null && dateFinished.getYear()> 2015;}
     public int daysPeriod(){
         return (int)((dateTo.getTime()-dateFrom.getTime()) / DateUtils.DAY_IN_MILLIS);
     }
@@ -81,7 +79,6 @@ public class Goal extends Record implements Parcelable {
         dateFinished = new Date(in.readLong());
         goalTitle = in.readString();
         addiction = in.readString();
-        profile = Profile.FindOrCreate(in.readString());
         goalDescription = in.readString();
         subGoals = new ArrayList<>();
         in.readList(subGoals, SubGoal.class.getClassLoader());
@@ -150,11 +147,7 @@ public class Goal extends Record implements Parcelable {
         dest.writeLong(dateFinished.getTime());
         dest.writeString(goalTitle);
         dest.writeString(addiction);
-        if(profile==null){
-            dest.writeString("");
-        }else {
-            dest.writeString(profile.getUsername());
-        }
+
         dest.writeString(goalDescription);
 
         dest.writeList(subGoals);
@@ -173,9 +166,9 @@ public class Goal extends Record implements Parcelable {
         reminderDaysSpan = data.getInt("reminder_frequency");
         goalDescription = data.getString("description");
         this.reminderDaysSpan = data.getInt("reminder_frequency");
-        this.addiction = data.getString("addiction");
+        this.addiction = data.getString("addiction_type");
         this.goalTitle = data.getString("title");
-        this.profile = Profile.FindOrCreate(data.getString("profile"));
+
 
         //todo check format
         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);

@@ -4,8 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,13 +18,43 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.orbit.motti.Records.Goal;
+import com.orbit.motti.Records.Profile;
+import com.orbit.motti.Records.SubGoal;
+
+import java.io.InvalidClassException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class History extends AppCompatActivity {
 
+    private RecyclerView mRecyclerView;
+    private List<Goal> goals;
+    private GoalAdapter goalSwipeAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        Database database = new Database(this);
+        database.connectToDatabase();
+        try {
+            Profile p = GoalsActivity.p;
+            GoalsActivity.p.loadFromDatabase();
+        } catch (InvalidClassException e) {
+            e.printStackTrace();
+        }
+        goals = GoalsActivity.p.goals;
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler_view);
+        goalSwipeAdapter = new GoalAdapter(goals, this);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(goalSwipeAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

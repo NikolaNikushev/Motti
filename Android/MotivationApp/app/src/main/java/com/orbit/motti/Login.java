@@ -30,8 +30,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getApplicationContext(), GoalsActivity.class);
-                startActivity(i);
+
 
                 Profile p = new Profile(((EditText) findViewById(R.id.login_edit_text)).getText().toString());
 
@@ -138,8 +137,9 @@ public class Login extends AppCompatActivity {
             executeSQL("Insert into profile  values ('ilia', 1)", database);
             executeSQL("Insert into profile  values ('francisco', 5)", database);
 
-            database.insert("goal", "title, description, date_from, date_to, reminder_frequency, Addiction_type, profile",
-                    "'Stop smoking 5 packs', 'I would love to stop smoking so much', '2016-02-02', '2016-02-08', 2, 'smoking', 'ruud'");
+            database.insert("goal",
+                    "title, date_finished, description, date_from, date_to, reminder_frequency, Addiction_type, profile",
+                    "'Stop smoking 5 packs','2016-02-10', 'I would love to stop smoking so much', '2016-02-02', '2016-02-08', 2, 'smoking', 'ruud'");
         } else {
             return;
         }

@@ -45,14 +45,14 @@ public class Database {
 
         // goals in the application
         CreateTable("Goal", "CREATE TABLE Goal (\n" +
-                "\tTitle VARCHAR(256),\n" +
-                "\tDescription TEXT(2000000000),\n" +
+                "\ttitle VARCHAR(256),\n" +
+                "\tdescription TEXT(2000000000),\n" +
                 "\tdate_from DATE(2000000000),\n" +
                 "\tDate_to DATE(2000000000),\n" +
                 "\treminder_frequency INTEGER,\n" +
-                "\tID INTEGER,\n" +
+                "\tid INTEGER,\n" +
                 "\tdate_finished DATE(2000000000),\n" +
-                "\tAddiction_type VARCHAR(256),\n" +
+                "\taddiction_type VARCHAR(256),\n" +
                 "\tprofile VARCHAR(256),\n" +
                 "\tCONSTRAINT goal_pk PRIMARY KEY (ID)\n" +
                 ");");
@@ -78,7 +78,7 @@ public class Database {
 
         // did you know; question; personal action
         CreateTable("Motivation_Type", "CREATE TABLE Motivation_Type (\n" +
-                "\tName VARCHAR(256),\n" +
+                "\tname VARCHAR(256),\n" +
                 "\tCONSTRAINT motivation_type_pk PRIMARY KEY (Name)\n" +
                 ");");
 
@@ -93,8 +93,8 @@ public class Database {
                 "CREATE INDEX sqlite_autoindex_Personal_Question_Answer_1 ON Personal_Question_Answer (motivation_id,answer);\n");
 
         CreateTable("Sub_Goal", "CREATE TABLE Sub_Goal (\n" +
-                "\tID INTEGER,\n" +
-                "\tTitle VARCHAR(256),\n" +
+                "\tid INTEGER,\n" +
+                "\ttitle VARCHAR(256),\n" +
                 "\tparent_goal INTEGER,\n" +
                 "\tis_finished BOOL,\n" +
                 "\ttime_period INTEGER,\n" +

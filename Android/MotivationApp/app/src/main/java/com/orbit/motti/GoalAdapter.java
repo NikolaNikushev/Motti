@@ -81,7 +81,12 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
             this.goal = pGoal;
             goalTitleTextView.setText(goal.getGoalTitle());
             goalDescriptionTextView.setText(goal.getGoalDescription());
-            goalPeriodLeftTextView.setText("Days left: " + goal.getGoalPeriod());
+            if(goal.isFinished()){
+                goalPeriodLeftTextView.setText("Finished");
+            }
+            else {
+                goalPeriodLeftTextView.setText("Days left: " + goal.getGoalPeriod());
+            }
             goalProgressTextView.setText(goal.getGoalProgress());
 
 

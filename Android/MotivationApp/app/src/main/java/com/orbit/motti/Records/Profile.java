@@ -80,7 +80,7 @@ public class Profile extends Record {
 
     public static Profile FindOrCreate(String username){
         for (Profile i : profileCache) {
-            if(i.username == username && i.getIsCreated())
+            if(i.username == username )
                 return i;
         }
         Profile p = new Profile(username);
