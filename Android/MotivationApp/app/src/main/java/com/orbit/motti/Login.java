@@ -88,43 +88,43 @@ public class Login extends AppCompatActivity {
 
             //motivations
             Log.i("test", "more");
-            executeSQL("Insert into motivation  values ('Im not telling you it is going to be easy but im telling you it is worth it.','none', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('It always seems impossible, until it is done!','none', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Do not give up, the beginning is always the hardest!','none', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('It’s easy to quit, it takes faith to go through!','none', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('The struggle you are in today is the strength you need tomorrow!','none', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Money does not have healing properties but it makes a nice salve!','none', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('If you owe some money get a plan and pay them!','none', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Make this the year to tackle your problem once and for all!','none', true, 'null')", database);
+            executeSQL("Insert into motivation  values ('Im not telling you it is going to be easy but im telling you it is worth it.','none', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('It always seems impossible, until it is done!','none', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Do not give up, the beginning is always the hardest!','none', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('It’s easy to quit, it takes faith to go through!','none', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('The struggle you are in today is the strength you need tomorrow!','none', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Money does not have healing properties but it makes a nice salve!','none', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('If you owe some money get a plan and pay them!','none', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Make this the year to tackle your problem once and for all!','none', 1, 'null')", database);
 
             Log.i("test", "more");
             //did you know
-            executeSQL("Insert into motivation  values ('Alcohol consumption by college students is linked to at least 1,400 student deaths and 500,000 unintentional injuries each year.','drinking-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Alcohol does not relieve depression - it makes it worse.','drinking-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Excessive drinking can decrease the amount of testosterone in a man]s body and cause impotence.','drinking-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('A daily glass of wine will add 10 pounds per year.','drinking-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('0.6% of people in the world are kleptomaniacs.','thief-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Women are more likely to have kleptomania than men.','thief-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Debts can destroy marriages and relationships.','debt-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('For households that have credit card debt, the average amount of credit card debt is an astounding $15,799.','debt-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Smoking depletes the body of vitamin C by 30%.','smoking-know', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Smoking damages the gut.','smoking-know', true, 'null')", database);
+            executeSQL("Insert into motivation  values ('Alcohol consumption by college students is linked to at least 1,400 student deaths and 500,000 unintentional injuries each year.','drinking-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Alcohol does not relieve depression - it makes it worse.','drinking-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Excessive drinking can decrease the amount of testosterone in a man]s body and cause impotence.','drinking-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('A daily glass of wine will add 10 pounds per year.','drinking-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('0.6% of people in the world are kleptomaniacs.','thief-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Women are more likely to have kleptomania than men.','thief-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Debts can destroy marriages and relationships.','debt-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('For households that have credit card debt, the average amount of credit card debt is an astounding $15,799.','debt-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Smoking depletes the body of vitamin C by 30%.','smoking-know', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Smoking damages the gut.','smoking-know', 1, 'null')", database);
 
             //personal questions
-            executeSQL("Insert into motivation  values ('Do you feel responsible for your own action?','question', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Do you think you can break your old patterns?','question', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Can you do without social media for 2 days?','question', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Do you need professional help to solve your problem?','question', true, 'null')", database);
+            executeSQL("Insert into motivation  values ('Do you feel responsible for your own action?','question', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Do you think you can break your old patterns?','question', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Can you do without social media for 2 days?','question', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Do you need professional help to solve your problem?','question', 1, 'null')", database);
             //Plus personal for goal
 
 
             //personal action
 
-            executeSQL("Insert into motivation  values ('Say 3 times facing the mirror \"I can do this\"!','action', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Today I’m not going to spent money!','action', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Today I will do good for someone else.','action', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Say 3 times facing a mirror \"I like myself\"!','action', true, 'null')", database);
-            executeSQL("Insert into motivation  values ('Today I am going to solve a problem.','action', true, 'null')", database);
+            executeSQL("Insert into motivation  values ('Say 3 times facing the mirror \"I can do this\"!','action', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Today I’m not going to spent money!','action', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Today I will do good for someone else.','action', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Say 3 times facing a mirror \"I like myself\"!','action', 1, 'null')", database);
+            executeSQL("Insert into motivation  values ('Today I am going to solve a problem.','action', 1, 'null')", database);
 
             //users
             executeSQL("Insert into profile  values ('nikola', 3, 1)",database);

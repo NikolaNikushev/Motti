@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/new_game"
+    android:icon="@drawable/ic_radio_button_checked_black_24dp"
+    android:title="Game" />
+<item android:id="@+id/goals"
+    android:icon="@android:drawable/ic_menu_agenda"
+    android:title="Goals" />
+<item android:id="@+id/help"
+    android:icon="@drawable/ic_priority_high_black_24dp"
+    android:title="Help" />
+</menu>

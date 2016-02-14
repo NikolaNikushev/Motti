@@ -236,7 +236,6 @@ public class FortuneView extends View implements RedrawListener{
             swipeController.flingToRadians(index);
 
 
-
     }
 
     /**
