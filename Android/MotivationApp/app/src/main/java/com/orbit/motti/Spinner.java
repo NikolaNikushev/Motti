@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -149,9 +151,9 @@ public class Spinner extends AppCompatActivity {
                             new AlertDialog.Builder(context)
                                     .setTitle("Coins!")
                                     .setMessage("Congratulations!  You won " + coinsWon + " coins!")
-                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            // continue with delete
+
                                         }
                                     })
 
@@ -167,6 +169,17 @@ public class Spinner extends AppCompatActivity {
                             if (a.moveToFirst()) {
                                 r = new Random();
                                 int offset = r.nextInt(a.getCount());
+                                r = new Random();
+                                int bonusCoinChanse = r.nextInt(3);
+
+                                if (bonusCoinChanse > 1) {
+                                    GoalsActivity.p.loadFromDatabase();
+                                    currentCoints = GoalsActivity.p.getCredits();
+                                    database.executeSQL("Update profile set credits=" + (currentCoints + 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                    GoalsActivity.p.loadFromDatabase();
+
+                                    Toast.makeText(context, "You won an extra coin!", Toast.LENGTH_LONG).show();
+                                }
                                 a.move(offset % a.getCount());
                                 String msg = a.getString(a.getColumnIndex("description"));
 
