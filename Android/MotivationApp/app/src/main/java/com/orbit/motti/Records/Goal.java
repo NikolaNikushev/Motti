@@ -37,7 +37,25 @@ public class Goal extends Record implements Parcelable {
     private String addiction;
     public String getAddiction(){return this.addiction;}
 
+    public String getDateFromStr(){
+        return new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH).format(dateFrom);
+    }
 
+    public String getDateToStr(){
+        return new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH).format(dateTo);
+    }
+
+    public Date getDateFrom(){
+        return dateFrom;
+    }
+
+    public Date getDateTo(){
+        return dateTo;
+    }
+
+    public Date getDateFinished() {
+        return dateFinished;
+    }
 
     public boolean isFinished(){return dateFinished != null && dateFinished.getYear()> 2015;}
     public int daysPeriod(){

@@ -97,6 +97,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
         @Override
         public void onClick(View v) {
             Goal g = getGoal(getAdapterPosition());
+            GoalsActivity.selectedGoal=g;
             Intent intent = SubGoalActivity.getIntent(context, g);
             context.startActivity(intent);
         }

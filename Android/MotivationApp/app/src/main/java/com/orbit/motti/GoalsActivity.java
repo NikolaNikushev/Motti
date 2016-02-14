@@ -43,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class GoalsActivity extends AppCompatActivity {
     private int lastDeletedPosition = -1;
     private Goal lastDeletedGoal;
+    public static Goal selectedGoal;
     private RecyclerView mRecyclerView;
     private List<Goal> goals;
     private TextView firstTimeTextView;
@@ -340,6 +341,10 @@ public class GoalsActivity extends AppCompatActivity {
                                     Integer.valueOf(goalPeriodText.getText().toString()),
                                     addictionTypes[result[0]]);
                             goals.add(goal);
+                            Database.insert(goal, "title,description,id,addiction_type,profile,reminder_frequency,date_from,date_to",
+                                    "'" + goal.getGoalTitle() + "','" + goal.getGoalDescription() + "'," + goal.getID() + ",'" + goal.getAddiction()
+                                            + "','" + p.getUsername() + "'," + goal.getReminderDaysSpan() + ",'" + goal.getDateFromStr() + "','"
+                                            + goal.getDateToStr() + "'");
                             final Goal g = goal;
                             goalDialog.dismiss();
                             updateUI();

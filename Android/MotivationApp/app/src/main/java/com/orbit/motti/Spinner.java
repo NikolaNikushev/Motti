@@ -22,8 +22,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.orbit.motti.Records.Goal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +146,9 @@ public class Spinner extends AppCompatActivity {
                                 name = "none";
                                 break;
                             case Personal_Question:
+                                name = "p-question";
+                                break;
+                            case Question:
                                 name = "question";
                                 break;
 
@@ -163,37 +169,86 @@ public class Spinner extends AppCompatActivity {
 
 
                         } else {
-                            Cursor a = database.executeWithResult("Select * from motivation where motivation_type='" + name + "'");
 
+                            AlertDialog.Builder b = null;
+                            if (name.equals("p-question")) {
 
-                            if (a.moveToFirst()) {
-                                r = new Random();
-                                int offset = r.nextInt(a.getCount());
-                                r = new Random();
-                                int bonusCoinChanse = r.nextInt(3);
+                                Random ran = new Random();
+                                List<Goal> p = GoalsActivity.p.goals;
+                                if(p.size() > 0) {
+                                    int num = ran.nextInt(p.size());
+                                    Goal g = GoalsActivity.p.goals.get(num);
+                                    final Dialog dialog = new Dialog(context);
+                                    dialog.setContentView(R.layout.personal_goal_progress_popup);
+                                    dialog.setTitle("Progress question about goal: " + g.getGoalTitle());
 
-                                if (bonusCoinChanse > 1) {
-                                    GoalsActivity.p.loadFromDatabase();
-                                    currentCoints = GoalsActivity.p.getCredits();
-                                    database.executeSQL("Update profile set credits=" + (currentCoints + 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
-                                    GoalsActivity.p.loadFromDatabase();
+                                    // set the custom dialog components - text, image and button
+                                    TextView text = (TextView) dialog.findViewById(R.id.person_view);
+                                    text.setText("How do you think is this goal is going?");
+                                    SeekBar bar = (SeekBar) dialog.findViewById(R.id.seekBar);
 
-                                    Toast.makeText(context, "You won an extra coin!", Toast.LENGTH_LONG).show();
-                                }
-                                a.move(offset % a.getCount());
-                                String msg = a.getString(a.getColumnIndex("description"));
-
-                                new AlertDialog.Builder(context)
-                                        .setTitle(f.name())
-                                        .setMessage(msg)
-                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                // continue with delete
+                                    final int value = bar.getProgress();
+                                    Button dialogClose = (Button) dialog.findViewById(R.id.person_dismiss);
+                                    // if button is clicked, close the custom dialog
+                                    dialogClose.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                            String msg = "";
+                                            if (value < 20) {
+                                                msg = "It may seem alot, but you can do it!";
+                                            } else if (value < 50) {
+                                                msg = "Improving, improving. Keep going! ";
+                                            } else if (value < 80) {
+                                                msg = "You are getting closer. You can do it!";
+                                            } else {
+                                                msg = "You are almost there, what is left now? ";
                                             }
-                                        })
+                                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                    dialog.show();
+                                }
+                                else{
+                                    Toast.makeText(context, "You do not have goals yet..", Toast.LENGTH_LONG).show();
+                                }
 
-                                        .setIcon(R.mipmap.achiv_stars)
-                                        .show();
+                            } else {
+                                Cursor a = database.executeWithResult("Select * from motivation where motivation_type='" + name + "'");
+
+
+                                if (a.moveToFirst()) {
+                                    r = new Random();
+                                    int offset = r.nextInt(a.getCount());
+                                    r = new Random();
+
+                                    a.move(offset % a.getCount());
+                                    String msg = a.getString(a.getColumnIndex("description"));
+                                    b = new AlertDialog.Builder(context);
+
+                                    b.setTitle(f.name()).setMessage(msg)
+                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // continue with delete
+                                                }
+                                            })
+                                            .setIcon(R.mipmap.achiv_stars);
+                                }
+                                if (b != null) {
+                                    int bonusCoinChanse = r.nextInt(3);
+
+                                    if (bonusCoinChanse > 1) {
+                                        GoalsActivity.p.loadFromDatabase();
+                                        currentCoints = GoalsActivity.p.getCredits();
+                                        database.executeSQL("Update profile set credits=" + (currentCoints + 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                        GoalsActivity.p.loadFromDatabase();
+
+                                        Toast.makeText(context, "You won an extra coin!", Toast.LENGTH_LONG).show();
+                                    }
+                                    b.show();
+                                }
+
+
                             }
                         }
 
@@ -359,8 +414,8 @@ public class Spinner extends AppCompatActivity {
 //        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_menu_save), FortuneItem.HingeType.Fixed));
 
         // Create a numbered wheel with the values 0 to 9
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.mipmap.personal_question), TypeOfFortune.Action));
-        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.mipmap.question), TypeOfFortune.Personal_Question));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.mipmap.personal_question), TypeOfFortune.Personal_Question));
+        dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.mipmap.question), TypeOfFortune.Question));
         dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.mipmap.achiv_cup), TypeOfFortune.Motivation));
         dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.mipmap.did_you_know), TypeOfFortune.Did_you_know));
         dis.add(new FortuneItem(BitmapFactory.decodeResource(getResources(), R.mipmap.action), TypeOfFortune.Action));
