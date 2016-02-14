@@ -138,8 +138,22 @@ public class Login extends AppCompatActivity {
             executeSQL("Insert into profile  values ('francisco', 5)", database);
 
             database.insert("goal",
-                    "title, date_finished, description, date_from, date_to, reminder_frequency, Addiction_type, profile",
-                    "'Stop smoking 5 packs','2016-02-10', 'I would love to stop smoking so much', '2016-02-02', '2016-02-08', 2, 'smoking', 'ruud'");
+                    "id, title, date_finished, description, date_from, date_to, reminder_frequency, Addiction_type, profile",
+                    "10, 'Stop smoking 5 packs','2016-02-10', 'I would love to stop smoking so much', '2016-02-02', '2016-02-08', 2, 'smoking', 'ruud'");
+
+            database.insert("goal",
+                    "id, title, description, date_from, date_to, reminder_frequency, Addiction_type, profile",
+                    "20, 'Spend less', 'My birthday is coming up', '2016-03-02', '2016-05-08', 2, 'debt', 'ruud'");
+
+            database.insert("sub_goal",
+                    "id, title, parent_goal, is_finished",
+                    "100, 'Save on electronics', 20, 1"
+                    );
+            database.insert("sub_goal",
+                    "id, title, parent_goal, is_finished",
+                    "101, 'Cut on junk food', 20, 0"
+            );
+
         } else {
             return;
         }
