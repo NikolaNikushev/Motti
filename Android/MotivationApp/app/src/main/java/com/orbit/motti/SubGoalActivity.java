@@ -53,7 +53,7 @@ public class SubGoalActivity extends AppCompatActivity {
         subGoalFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    createDialog().show();
+                createDialog().show();
             }
         });
 
@@ -104,6 +104,7 @@ public class SubGoalActivity extends AppCompatActivity {
                         } else {
                             SubGoal sg = new SubGoal(subGoalTitleText.getText().toString(),
                                     Integer.valueOf(subGoalPeriodText.getText().toString()));
+                            Database.insert(sg.getTableName(), "title,parent_goal", "'" + sg.getSubGoalTitle() + "'," + goal.getID());
                             goal.addSubGoal(sg);
                             subGoalDialog.dismiss();
                             subGoalAdapter.notifyDataSetChanged();
