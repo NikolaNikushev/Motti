@@ -104,8 +104,8 @@ public class SubGoalActivity extends AppCompatActivity {
                         } else {
                             SubGoal sg = new SubGoal(subGoalTitleText.getText().toString(),
                                     Integer.valueOf(subGoalPeriodText.getText().toString()));
-                            Database.insert(sg.getTableName(), "title,parent_goal", "'" + sg.getSubGoalTitle() + "'," + goal.getID());
                             goal.addSubGoal(sg);
+                            Database.insert(sg, "title,parent_goal", "'" + sg.getSubGoalTitle() + "'," + goal.getID());
                             subGoalDialog.dismiss();
                             subGoalAdapter.notifyDataSetChanged();
                         }

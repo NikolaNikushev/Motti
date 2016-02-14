@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.orbit.motti.Records.SubGoal;
@@ -49,9 +50,16 @@ public class SubGoalAdapter extends RecyclerView.Adapter<SubGoalAdapter.SubGoalV
             subGoalFinishedCheckBox = (CheckBox) itemView.findViewById(R.id.sub_goal_finished_cb);
         }
 
-        public void bindSubGoal(SubGoal subGoal) {
+        public void bindSubGoal(final SubGoal subGoal) {
             subGoalTitle.setText(subGoal.getSubGoalTitle());
             subGoalFinishedCheckBox.setChecked(subGoal.isFinished());
+            subGoalFinishedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    subGoal.setIsFinished(isChecked);
+                    Database.update(subGoal, "is_finished=" + (subGoal.isFinished() ? 1 : 0));
+                }
+            });
         }
     }
 }

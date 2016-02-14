@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.orbit.motti.Records.ExtendedCursor;
 import com.orbit.motti.Records.Goal;
 
 import java.util.List;
@@ -79,6 +80,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
 
         public void bindGoal(Goal pGoal) {
             this.goal = pGoal;
+
             goalTitleTextView.setText(goal.getGoalTitle());
             goalDescriptionTextView.setText(goal.getGoalDescription());
             if(goal.isFinished()){

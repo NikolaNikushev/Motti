@@ -3,6 +3,7 @@ package com.orbit.motti.Records;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateUtils;
+import android.text.method.DateTimeKeyListener;
 
 import com.orbit.motti.Database;
 import com.orbit.motti.IdentifierColumn;
@@ -24,11 +25,11 @@ public class Goal extends Record implements Parcelable {
 
 
     private String goalTitle;
-    private List<SubGoal> subGoals;
+    private List<SubGoal> subGoals=new ArrayList<>();
     private String goalDescription;
 
-    private Date dateFrom;
-    private Date dateTo;
+    private Date dateFrom=new Date();
+    private Date dateTo=new Date();
     private Date dateFinished=new Date(12,20,2012);
 
     private int reminderDaysSpan;
@@ -61,6 +62,9 @@ public class Goal extends Record implements Parcelable {
         this.ID = ID;
     }
 
+    public Goal(){
+
+    }
     public Goal(String goalTitle, String goalDescription, int reminderDaysSpan, int goalPeriodDays,String adddictType) {
         this.goalTitle = goalTitle;
         this.goalDescription = goalDescription;

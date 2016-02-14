@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.orbit.motti.Records.ExtendedCursor;
 import com.orbit.motti.Records.Goal;
 import com.orbit.motti.Records.Profile;
 import com.orbit.motti.Records.SubGoal;
@@ -354,10 +355,18 @@ public class GoalsActivity extends AppCompatActivity {
     }
 
     private void fillGoals() {
-        for (int i = 0; i < 15; i++) {
-            Goal g = new Goal("I want to quit smoking " + i, getFillerText(), 4, 5, "");
-            goals.add(g);
+        this.goals = GoalsActivity.p.goals;
+    }
+
+    @Override
+    protected void onResume() {
+        try {
+            p.loadFromDatabase();
+        } catch (Exception e) {
         }
+        this.goals = GoalsActivity.p.goals;
+        goalSwipeAdapter.notifyDataSetChanged();
+        super.onResume();
     }
 
     @Override
