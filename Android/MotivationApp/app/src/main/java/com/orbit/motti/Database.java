@@ -37,11 +37,11 @@ public class Database {
 
     public static void connectToDatabase(){
         //Profiles
-        CreateTable("Profile","CREATE TABLE Profile (\n" +
+        CreateTable("Profile", "CREATE TABLE Profile (\n" +
                 "\tusername VARCHAR(256),\n" +
                 "\tcredits INTEGER,\n" +
                 "\tCONSTRAINT profile_pk PRIMARY KEY (username)\n" +
-                ");" );
+                ");");
 
         // goals in the application
         CreateTable("Goal", "CREATE TABLE Goal (\n" +
@@ -120,6 +120,22 @@ public class Database {
 
     public  static  void insert(String table, String keys, String values){
         executeSQL("Insert into " + table + "(" + keys + ")" + "Values ("+values+")");
+    }
+
+    public  static  void insert(Record record, String keys, String values){
+        insert(record.getTableName(), keys, values);
+    }
+
+    public  static  void update(String table, String set, String where){
+        executeSQL("Update " + table + " Set " + set + " Where " + where);
+    }
+
+    public  static  void update(Record record, String set){
+        update(record.getTableName(), set, record.getIdentifierColumn().forQuery());
+    }
+
+    public  static  void update(Record record, String set, String where){
+        update(record.getTableName(), set, where);
     }
 
     public static void executeSQL(String sql){
