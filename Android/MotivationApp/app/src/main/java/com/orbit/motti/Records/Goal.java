@@ -22,13 +22,14 @@ public class Goal extends Record implements Parcelable {
 
     private static  List<Goal> goalCache = new ArrayList<>();
 
+
     private String goalTitle;
     private List<SubGoal> subGoals;
     private String goalDescription;
 
     private Date dateFrom;
     private Date dateTo;
-    private Date dateFinished;
+    private Date dateFinished=new Date(12,20,2012);
 
     private int reminderDaysSpan;
 
@@ -62,15 +63,15 @@ public class Goal extends Record implements Parcelable {
         this.ID = ID;
     }
 
-    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan, int goalPeriodDays) {
+    public Goal(String goalTitle, String goalDescription, int reminderDaysSpan, int goalPeriodDays,String adddictType) {
         this.goalTitle = goalTitle;
         this.goalDescription = goalDescription;
         this.subGoals = new ArrayList<>();
         this.reminderDaysSpan = reminderDaysSpan;
         this.dateFrom = new Date();
-        this.dateTo = new Date(dateFrom.getTime()+DateUtils.DAY_IN_MILLIS * goalPeriodDays);
-
+        this.dateTo = new Date(dateFrom.getTime() + DateUtils.DAY_IN_MILLIS * goalPeriodDays);
         goalCache.add(this);
+        this.addiction = adddictType;
     }
 
     protected Goal(Parcel in) {
@@ -149,10 +150,16 @@ public class Goal extends Record implements Parcelable {
         dest.writeLong(dateFinished.getTime());
         dest.writeString(goalTitle);
         dest.writeString(addiction);
-        dest.writeString(profile.getUsername());
+        if(profile==null){
+            dest.writeString("");
+        }else {
+            dest.writeString(profile.getUsername());
+        }
         dest.writeString(goalDescription);
 
         dest.writeList(subGoals);
+
+
     }
 
     @Override
@@ -214,7 +221,7 @@ public class Goal extends Record implements Parcelable {
             if(i.ID == id && i.getIsCreated())
                 return i;
         }
-        Goal g = new Goal(null,null,0,0);
+        Goal g = new Goal(null,null,0,0,"");
         g.setID(id);
         try {
             g.loadFromDatabase();

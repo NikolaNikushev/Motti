@@ -47,11 +47,11 @@ public class Profile extends Record {
         this.credits = data.getInt("credits");
 
         this.goals.clear();
-        Goal g = new Goal(null,null,0,0);
+        Goal g = new Goal(null,null,0,0,"");
         ExtendedCursor records = Database.Instance.executeWithResult("Select * from " + g.getTableName() + " where profile = '" + this.username +"'");
 
         while (records.moveToNext()) {
-            g = new Goal(null,null,0,0);
+            g = new Goal(null,null,0,0,"");
             g.loadFromCursor(records);
             this.goals.add(g);
             if(!this.addictions.contains(g.getAddiction()))

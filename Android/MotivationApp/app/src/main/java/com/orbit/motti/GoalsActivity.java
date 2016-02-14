@@ -287,10 +287,18 @@ public class GoalsActivity extends AppCompatActivity {
         final EditText goalDescriptionText = (EditText) dialogView.findViewById(R.id.goal_description_edit_text);
         final EditText goalRemindText = (EditText) dialogView.findViewById(R.id.goal_remind_edit_text);
         final EditText goalPeriodText = (EditText) dialogView.findViewById(R.id.goal_period_edit_text);
-
+        final String addictionType = "";
+        final String[] addictionTypes = new String[]{"Smoking", "Drinking", "Debt", "Drugs"};
+        final int[] result = new int[1];
         final AlertDialog goalDialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
-                .setTitle("Enter goal title")
+                .setTitle("Add new goal")
+                .setSingleChoiceItems(addictionTypes, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        result[0] = which;
+                    }
+                })
                 .setPositiveButton("Add", null)
                 .setNegativeButton("Cancel", null)
                 .create();
@@ -300,7 +308,6 @@ public class GoalsActivity extends AppCompatActivity {
             public void onShow(DialogInterface dialog) {
                 Button positiveButton = goalDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button negativeButton = goalDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-
                 negativeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -321,9 +328,10 @@ public class GoalsActivity extends AppCompatActivity {
                         } else {
                             Goal goal = new Goal(
                                     goalTitleText.getText().toString(),
-                                    getFillerText(),
+                                    goalDescriptionText.getText().toString(),
                                     Integer.valueOf(goalRemindText.getText().toString()),
-                                    Integer.valueOf(goalPeriodText.getText().toString()));
+                                    Integer.valueOf(goalPeriodText.getText().toString()),
+                                    addictionTypes[result[0]]);
                             goals.add(goal);
                             goalDialog.dismiss();
                             updateUI();
@@ -347,12 +355,7 @@ public class GoalsActivity extends AppCompatActivity {
 
     private void fillGoals() {
         for (int i = 0; i < 15; i++) {
-            Goal g = new Goal("I want to quit smoking " + i, getFillerText(), 4, 5);
-            for (int y = 0; y < 15; y++) {
-                SubGoal sg = new SubGoal("I want to smoke only 1 cigarrete today", 4);
-                sg.setIsFinished(y % 2 == 0);
-                g.addSubGoal(sg);
-            }
+            Goal g = new Goal("I want to quit smoking " + i, getFillerText(), 4, 5, "");
             goals.add(g);
         }
     }

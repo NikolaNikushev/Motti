@@ -4,20 +4,20 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content">
+
     <EditText
+        android:layout_margin="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter the title for your goal."
+        android:hint="Enter goal title"
         android:id="@+id/goal_title_edit_text" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Goal description"
-        />
+
     <EditText
         android:id="@+id/goal_description_edit_text"
+        android:hint="Enter goal description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,32 +25,41 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="Time period"
+            android:text="Goal deadline"
             android:textSize="16sp"
             />
-        <TextView
-            android:text="Remind me every"
-            android:textSize="16sp"
-            android:gravity="center"
+        <EditText
+            android:layout_margin="5dp"
+            android:id="@+id/goal_period_edit_text"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <EditText
-            android:id="@+id/goal_period_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+        <TextView
+            android:text="Remind me every"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="0.50"
+            android:layout_height="wrap_content"/>
         <EditText
             android:id="@+id/goal_remind_edit_text"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="0.30"/>
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="days"
+            android:layout_weight="0.20"/>
     </LinearLayout>
 </LinearLayout>
