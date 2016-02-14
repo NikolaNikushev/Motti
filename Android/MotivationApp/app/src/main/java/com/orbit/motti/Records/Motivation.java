@@ -9,6 +9,16 @@ import com.orbit.motti.Record;
  * Created by Vader on 13/02/2016.
  */
 public class Motivation extends Record {
+    private String ID;
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
     private String description;
     public String getDescription(){return this.description;}
 
@@ -39,25 +49,21 @@ public class Motivation extends Record {
 
         this.type = data.getString("motivation_type");
 
-        this.addiction = data.getString("addiction_type");
+        this.addiction = data.getString("addiction");
     }
 
     @Override
     protected IdentifierColumn setIdentifierColumn() {
-        return new IdentifierColumn(this, "description") {
+        return new IdentifierColumn(this, "id") {
             @Override
             public Object getValue() {
-                return ((Motivation)this.getRecord()).getDescription();
+                return ((Motivation)this.getRecord()).getID();
             }
 
             @Override
             public void setValue(Object value) {
-                ((Motivation)this.getRecord()).setDescription((String) value);
+                ((Motivation)this.getRecord()).setID((String) value);
             }
         };
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

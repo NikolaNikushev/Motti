@@ -1,11 +1,10 @@
 package com.orbit.motti.Records;
 
 import com.orbit.motti.Database;
-import com.orbit.motti.Goal;
 import com.orbit.motti.IdentifierColumn;
 import com.orbit.motti.Record;
 
-import java.lang.reflect.Array;
+import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import java.util.List;
  * Created by Vader on 13/02/2016.
  */
 public class Profile extends Record {
+    private static List<Profile> profileCache = new ArrayList<>();
     private String username = null;
 
     public List<String> addictions = new ArrayList<>();
@@ -31,6 +31,7 @@ public class Profile extends Record {
 
     public Profile(String name) {
         this.username = name;
+        profileCache.add(this);
     }
 
     @Override
@@ -75,5 +76,17 @@ public class Profile extends Record {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public static Profile FindOrCreate(String username){
+        for (Profile i : profileCache) {
+            if(i.username == username && i.getIsCreated())
+                return i;
+        }
+        Profile p = new Profile(username);
+        try {
+            p.loadFromDatabase();
+        }catch (InvalidClassException ex){}
+        return p;
     }
 }

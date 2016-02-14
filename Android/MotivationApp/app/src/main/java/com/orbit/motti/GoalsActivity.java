@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.orbit.motti.Records.Goal;
 import com.orbit.motti.Records.Profile;
 
 import java.util.ArrayList;
