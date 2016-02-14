@@ -21,9 +21,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-        //// TODO: 13/02/2016  temporary fix
-
         InitDBData(true);
 
 
@@ -39,7 +36,6 @@ public class Login extends AppCompatActivity {
 
                 try {
                     p.loadFromDatabase();
-                    Log.i("credit",p.getCredits()+"");
                     Intent in = new Intent(getApplicationContext(), GoalsActivity.class);
                     GoalsActivity.p = p;
 
@@ -133,8 +129,7 @@ public class Login extends AppCompatActivity {
             executeSQL("Insert into profile  values ('ilia', 3, 1)", database);
             executeSQL("Insert into profile  values ('francisco',  3, 5)", database);
 
-            Cursor b = database.executeWithResult("Select * from motivation ");
-            Log.i("b", b.getCount()+"");
+
         } else {
             return;
         }

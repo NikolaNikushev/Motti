@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20px">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Details"
+        android:id="@+id/sponsor_details"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="200px"
+        android:layout_height="300px"
+        android:src="@mipmap/sponsor0"
+        android:background="@drawable/image_bordor"
+        android:id="@+id/sponsor1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_below="@id/sponsor_details"
+        android:layout_marginTop="51dp" />
+
+    <ImageView
+        android:layout_width="200px"
+        android:layout_height="300px"
+        android:background="@drawable/image_bordor"
+        android:id="@+id/sponsor2"
+        android:src="@mipmap/sponsor1"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/sponsor_details"
+        android:layout_alignTop="@+id/sponsor1"
+        android:layout_toRightOf="@id/sponsor1"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="200px"
+        android:layout_height="300px"
+        android:id="@+id/sponsor3"
+        android:src="@mipmap/sponsor3"
+        android:background="@drawable/image_bordor"
+        android:layout_below="@id/sponsor_details"
+        android:layout_alignTop="@+id/sponsor2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@id/sponsor2"
+/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sponsor2"
+        android:text="Dismiss"
+        android:id="@+id/sponsor_dismiss"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+</RelativeLayout>

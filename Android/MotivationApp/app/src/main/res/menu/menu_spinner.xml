@@ -1,4 +1,5 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/goals"
         android:icon="@android:drawable/ic_menu_agenda"
         android:title="Goals" />
@@ -8,4 +9,8 @@
     <item android:id="@+id/help"
         android:icon="@drawable/ic_priority_high_black_24dp"
         android:title="Help" />
+    <item android:id="@+id/coins"
+        android:icon="@mipmap/coin"
+        android:title="Coins"
+        app:showAsAction="always"/>
 </menu>

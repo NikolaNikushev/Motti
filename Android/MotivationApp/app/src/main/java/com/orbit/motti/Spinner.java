@@ -1,5 +1,6 @@
 package com.orbit.motti;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,8 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.orbit.motti.Records.Addiction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,83 +43,112 @@ public class Spinner extends AppCompatActivity {
         public void run() {
             try {
                 selected = fortuneView.getSelectedIndex();
+                Database database = new Database(context);
+                database.connectToDatabase();
+                GoalsActivity.p.loadFromDatabase();
+                TypeOfFortune f = fortuneView.getItem(selected).getFortune();
+                Random r = new Random();
+                String name = "";
                 if (!firstRun) {
-                    TypeOfFortune f = fortuneView.getItem(selected).getFortune();
-                    Random r = new Random();
-                    List<Addiction> ads = GoalsActivity.p.addictions;
-                    String name = "";
+
+                    List<String> ads = GoalsActivity.p.addictions;
+
                     if (ads.size() > 0) {
                         int number = r.nextInt(ads.size());
-                        Addiction add = GoalsActivity.p.addictions.get(number);
-                        name = add.getName();
+                        String add = GoalsActivity.p.addictions.get(number);
+                        name = add;
                     }
-                    Database database = new Database(context);
+
                     int currentCoints = GoalsActivity.p.getCredits();
-                    int coinsWon = 0;
-                    switch (f) {
-                        case Action:
-                            name = "action";
-                            break;
-                        case Coin2:
-                            //update with 2 coins
+                    if (currentCoints > 0) {
+                        database.executeSQL("Update profile set credits=" + (currentCoints - 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
 
-                            database.connectToDatabase();
+                        int coinsWon = 0;
+                        switch (f) {
+                            case Action:
+                                name = "action";
+                                break;
+                            case Coin2:
+                                //update with 2 coins
 
-                            database.executeSQL("Update profile set credits=" + (currentCoints + 2) + " where username = '" + GoalsActivity.p.getUsername() + "'");
-                            coinsWon = 2;
+                                database.executeSQL("Update profile set credits=" + (currentCoints + 2) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                coinsWon = 2;
 
-                            break;
-                        case Coin3:
+                                break;
+                            case Coin3:
 
-                            database.connectToDatabase();
+                                database.connectToDatabase();
 
-                            database.executeSQL("Update profile set credits=" + (currentCoints + 3) + " where username = '" + GoalsActivity.p.getUsername() + "'");
-                            coinsWon = 3;
-                            break;
-                        case Did_you_know:
-                            name += "-know";
-                            break;
-                        case Donation:
-                            name = "donation";
-                            break;
-                        case Motivation:
-                            name = "none";
-                            break;
-                        case Personal_Question:
-                            name = "question";
-                            break;
+                                database.executeSQL("Update profile set credits=" + (currentCoints + 3) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                coinsWon = 3;
+                                break;
+                            case Did_you_know:
+                                name += "-know";
+                                break;
+                            case Donation:
+                                name = "Donation";
+                                final Dialog dialog = new Dialog(context);
+                                dialog.setContentView(R.layout.donation_popup);
+                                dialog.setTitle(name);
 
-                    }
-                    if (name.length() == 0) {
-                        new AlertDialog.Builder(context)
-                                .setTitle("Coins!")
-                                .setMessage("Congratulations!  You won " + coinsWon + " coins!")
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // continue with delete
+                                // set the custom dialog components - text, image and button
+                                TextView text = (TextView) dialog.findViewById(R.id.sponsor_details);
+                                text.setText("Congratulations! You can pick a charity which you wish to receive 1€ as a donation from our sponsors. Select one from the following:");
+                                ImageView image = (ImageView) dialog.findViewById(R.id.sponsor1);
+
+                                ImageView image2 = (ImageView) dialog.findViewById(R.id.sponsor2);
+
+                                ImageView image3 = (ImageView) dialog.findViewById(R.id.sponsor3);
+
+
+                                image.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(context, "Keep up the good work and good luck for next time!", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
                                     }
-                                })
+                                });
 
-                                .setIcon(R.mipmap.achiv_stars)
-                                .show();
+                                image2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(context, "Keep up the good work and good luck for next time!", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
+                                    }
+                                });
 
-                    } else {
+                                image3.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(context, "Keep up the good work and good luck for next time!", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
+                                    }
+                                });
+                                Button dialogClose = (Button) dialog.findViewById(R.id.sponsor_dismiss);
+                                // if button is clicked, close the custom dialog
+                                dialogClose.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
+                                });
 
-                        database.connectToDatabase();
+                                dialog.show();
 
 
-                        Cursor a = database.executeWithResult("Select * from motivation where addiction='" + name + "'");
+                                break;
+                            case Motivation:
+                                name = "none";
+                                break;
+                            case Personal_Question:
+                                name = "question";
+                                break;
 
-
-                        if (a.moveToFirst()) {
-                            r = new Random();
-                            int offset = r.nextInt(a.getCount());
-                            a.move(offset % a.getCount());
-                            String msg = a.getString(a.getColumnIndex("description"));
-
+                        }
+                        if (name.length() == 0) {
                             new AlertDialog.Builder(context)
-                                    .setTitle(f.name())
-                                    .setMessage(msg)
+                                    .setTitle("Coins!")
+                                    .setMessage("Congratulations!  You won " + coinsWon + " coins!")
                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             // continue with delete
@@ -128,13 +157,59 @@ public class Spinner extends AppCompatActivity {
 
                                     .setIcon(R.mipmap.achiv_stars)
                                     .show();
+                            GoalsActivity.p.loadFromDatabase();
+
+
+                        } else {
+                            Cursor a = database.executeWithResult("Select * from motivation where addiction='" + name + "'");
+
+
+                            if (a.moveToFirst()) {
+                                r = new Random();
+                                int offset = r.nextInt(a.getCount());
+                                a.move(offset % a.getCount());
+                                String msg = a.getString(a.getColumnIndex("description"));
+
+                                new AlertDialog.Builder(context)
+                                        .setTitle(f.name())
+                                        .setMessage(msg)
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                            }
+                                        })
+
+                                        .setIcon(R.mipmap.achiv_stars)
+                                        .show();
+                            }
                         }
+
+                        Handler mainHandler = new Handler(context.getMainLooper());
+                        GoalsActivity.p.loadFromDatabase();
+                        Runnable myRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+
+                                View rootView = ((Activity) context).getWindow().getDecorView();
+                                View z = (View) rootView.findViewById(R.id.textView_spinner);
+                                TextView vl = (TextView) z;
+                                vl.setText(GoalsActivity.p.getCredits() + "");
+                            } // This is your code
+                        };
+                        mainHandler.post(myRunnable);
+
+                    } else {
+                        Toast.makeText(context, "You need more coins to spin the wheel!", Toast.LENGTH_LONG).show();
                     }
+
                 }
+
                 firstRun = false;
             } catch (Exception ex) {
                 Log.i("problem", ex.toString());
                 ex.printStackTrace();
+            } finally {
+
             }
         }
 
@@ -213,7 +288,7 @@ public class Spinner extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_spinner, menu);
@@ -239,7 +314,7 @@ public class Spinner extends AppCompatActivity {
                 //fortuneView.setSelectedItem((fortuneView.getSelectedIndex() == fortuneView.getTotalItems() - 1 ? 0 : fortuneView.getSelectedIndex() + 1));
                 //fortuneView.setSelectedItem((fortuneView.getSelectedIndex() == 0 ? fortuneView.getTotalItems() - 1 : fortuneView.getSelectedIndex() - 1));
                 fortuneView.setSelectedItemMultiple(randomInt);
-
+                t.run();
             }
         });
 

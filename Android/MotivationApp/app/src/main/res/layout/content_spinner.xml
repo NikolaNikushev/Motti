@@ -17,5 +17,6 @@
         android:layout_width="56dp"
         android:layout_height="39dp"
         android:id="@+id/textView_spinner"
+        android:textColor="@color/cardview_light_background"
         android:layout_gravity="right|top" />
 </FrameLayout>
