@@ -69,7 +69,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
             super(itemView);
             contentWrapper = (CardView) itemView.findViewById(R.id.content_wrapper);
             contentWrapper.setOnClickListener(this);
-            contentWrapper.setBackgroundColor(Color.rgb(249, 249, 249));
+           /// contentWrapper.setBackgroundColor(Color.rgb(249, 249, 249));
             goalTitleTextView = (TextView) itemView.findViewById(R.id.goal_title_text_view);
             goalDescriptionTextView = (TextView) itemView.findViewById(R.id.goal_description_text_view);
             goalPeriodLeftTextView = (TextView) itemView.findViewById(R.id.goal_period_text_view);

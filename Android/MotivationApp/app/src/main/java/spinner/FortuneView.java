@@ -7,10 +7,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.orbit.motti.R;
+import com.orbit.motti.Spinner;
+
 import paths.CircleWheelPath;
 import paths.CustomWheelPath;
 
@@ -49,6 +52,8 @@ public class FortuneView extends View implements RedrawListener{
     private boolean backgroundCentripetalForce = false;  // Does centripetal force act on the background
     public FortuneItem.HingeType backgroundHinge = FortuneItem.HingeType.Fixed; // Background hinge
     private float minimumSize = .5f; // Minimun size of a view
+
+    public static int lastSelected = 0;
 
     public FortuneView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -99,6 +104,10 @@ public class FortuneView extends View implements RedrawListener{
         fortuneItems.add(item);
         swipeController.setTotalItems(fortuneItems.size());
         reconfigure(true);
+    }
+
+    public FortuneItem getItem(int index){
+        return fortuneItems.get(index);
     }
 
 
@@ -156,16 +165,20 @@ public class FortuneView extends View implements RedrawListener{
             double rad = (path.getRadiusAtRadians(radians) * (distanceScale - centripitalForceAmount)) * radius;
             // Draw dialItem
             radians = fortuneItems.get(i).drawItem(canvas, rad, radians, getTotalValue(), (i == getSelectedIndex() ? selectScaleOffset : unselectScaleOffset), minimumSize, path.sizeBasedOnRadius());
-        }
 
+        }
+        lastSelected = getSelectedIndex();
         // Notify Listener
+
         if(getSelectedIndex() != lastGrooveIndex) {
             lastGrooveIndex = getSelectedIndex();
-            //Log.d("Groove", "Change: " + lastGrooveIndex);
+
             if(grooveListener != null)
                 grooveListener.onGrooveChange(lastGrooveIndex);
         }
+
     }
+
 
     @Override
     public void redraw() {

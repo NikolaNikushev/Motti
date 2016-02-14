@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -13,15 +14,27 @@ import java.util.Objects;
 public class Database {
     public  static  Database Instance;
 
-    public  Database(){
-        if(Instance == null)
+    public  Database(Context context){
+        if(Instance == null) {
             Instance = this;
+        }
+        database = context.openOrCreateDatabase("database.sqlite", SQLiteDatabase.CREATE_IF_NECESSARY, null);
     }
 
     protected static SQLiteDatabase database;
 
-    public static void connectToDatabase(Context context){
-        database = context.openOrCreateDatabase("database.sqlite", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+    public static void dropTables(){
+        executeSQL("Drop table profile");
+        executeSQL("Drop table motivation");
+        executeSQL("Drop table age_group");
+        executeSQL("Drop table Goal");
+        executeSQL("Drop table profile_addiction");
+        executeSQL("Drop table addiction_type");
+
+    }
+
+    public static void connectToDatabase(){
+
         
         //Profiles
         CreateTable("Profile","CREATE TABLE profile (\n" +

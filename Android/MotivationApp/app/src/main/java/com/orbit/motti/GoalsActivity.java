@@ -103,6 +103,7 @@ public class GoalsActivity extends AppCompatActivity {
 
         mRecyclerView.addOnItemTouchListener(swipeTouchListener);
 
+
         FloatingActionButton addGoalFAB = (FloatingActionButton) findViewById(R.id.fab);
         addGoalFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,15 +115,7 @@ public class GoalsActivity extends AppCompatActivity {
         //  Database database = new Database();
         //  database.connectToDatabase(this);
         //Initialize the database, setting Database.Instance to the first created;
-        Profile p = new Profile("test");
 
-        try {
-            p.loadFromDatabase();
-        } catch (InvalidClassException ex) {
-            //unable to load data from the database ( 0 records )
-        } catch (Exception ex) {
-            //invalid columns
-        }
     }
 
     private void updateUI() {
