@@ -71,7 +71,7 @@ public class Spinner extends AppCompatActivity {
                             case Coin2:
                                 //update with 2 coins
 
-                                database.executeSQL("Update profile set credits=" + (currentCoints + 2) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                database.executeSQL("Update profile set credits=" + (currentCoints + 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
                                 coinsWon = 2;
 
                                 break;
@@ -79,7 +79,7 @@ public class Spinner extends AppCompatActivity {
 
                                 database.connectToDatabase();
 
-                                database.executeSQL("Update profile set credits=" + (currentCoints + 3) + " where username = '" + GoalsActivity.p.getUsername() + "'");
+                                database.executeSQL("Update profile set credits=" + (currentCoints + 2) + " where username = '" + GoalsActivity.p.getUsername() + "'");
                                 coinsWon = 3;
                                 break;
                             case Did_you_know:

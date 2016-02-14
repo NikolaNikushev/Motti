@@ -70,10 +70,10 @@ public class Database {
                 "\tis_positive BOOL,\n" +
                 "\timage VARCHAR(256),\n" +
                 "\tmotivation_type VARCHAR(256),\n" +
-                "\taddiction_type VARCHAR(256),\n" +
+                "\taddiction VARCHAR(256),\n" +
                 "\tCONSTRAINT motivation_pk PRIMARY KEY (id),\n" +
                 "\tCONSTRAINT FK_Motivation_Motivation_Type FOREIGN KEY (motivation_type) REFERENCES Motivation_Type(Name) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
-                "\tCONSTRAINT FK_Motivation_addiction_type FOREIGN KEY (addiction_type) REFERENCES addiction_type(name) ON DELETE CASCADE ON UPDATE CASCADE\n" +
+                "\tCONSTRAINT FK_Motivation_addiction_type FOREIGN KEY (addiction) REFERENCES addiction(name) ON DELETE CASCADE ON UPDATE CASCADE\n" +
                 ");\n");
 
         // did you know; question; personal action
