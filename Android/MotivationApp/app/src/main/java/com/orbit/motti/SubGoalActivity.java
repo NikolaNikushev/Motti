@@ -37,7 +37,8 @@ public class SubGoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subgoal);
 
-        goal = getIntent().getExtras().getParcelable(GOAL_TAG);
+//        goal = getIntent().getExtras().getParcelable(GOAL_TAG);
+        goal=GoalsActivity.selectedGoal;
         goalTitleTextView = (TextView) findViewById(R.id.sub_goal_main_title_text_view);
         goalPeriodTextView = (TextView) findViewById(R.id.sub_goal_period_text_view);
         goalTitleTextView.setText(goal.getGoalTitle());
@@ -105,7 +106,7 @@ public class SubGoalActivity extends AppCompatActivity {
                             SubGoal sg = new SubGoal(subGoalTitleText.getText().toString(),
                                     Integer.valueOf(subGoalPeriodText.getText().toString()));
                             goal.addSubGoal(sg);
-                            Database.insert(sg, "title,parent_goal", "'" + sg.getSubGoalTitle() + "'," + goal.getID());
+                            Database.insert(sg, "id,title,parent_goal",sg.getID()+ ",'" + sg.getSubGoalTitle() + "'," + goal.getID());
                             subGoalDialog.dismiss();
                             subGoalAdapter.notifyDataSetChanged();
                         }
