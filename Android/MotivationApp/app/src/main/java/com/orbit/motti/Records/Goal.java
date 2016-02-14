@@ -1,29 +1,41 @@
-package com.orbit.motti;
+package com.orbit.motti.Records;
 
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.orbit.motti.Records.ExtendedCursor;
+import com.orbit.motti.Database;
+import com.orbit.motti.IdentifierColumn;
+import com.orbit.motti.Record;
+import com.orbit.motti.SubGoal;
 
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Preslav Gerchev on 13.2.2016 г..
  */
 public class Goal extends Record implements Parcelable {
-
     private String goalTitle;
     private List<SubGoal> subGoals;
     private String goalDescription;
+
+    private Date dateFrom;
+    private Date dateTo;
+    private Date dateFinished;
+
     private int reminderDaysSpan;
     private int goalProgress;
     private int goalPeriod;
 
     private String addiction;
-    public String getAddiction(){return  this.addiction;}
+    public String getAddiction(){return this.addiction;}
+
+    private Profile profile;
+    public Profile getProfile(){return profile;}
+    public Profile getOwner(){return  getProfile();}
 
     private int ID;
     public int getID() {
@@ -33,7 +45,6 @@ public class Goal extends Record implements Parcelable {
     public void setID(int ID) {
         this.ID = ID;
     }
-
 
     public Goal(String goalTitle, String goalDescription, int reminderDaysSpan, int goalPeriod) {
         this.goalTitle = goalTitle;
@@ -130,21 +141,30 @@ public class Goal extends Record implements Parcelable {
         goalDescription = data.getString("description");
         this.addiction = data.getString("addiction");
         this.goalTitle = data.getString("title");
-        //todo frequency
-        /*
-        Title VARCHAR(256),
-	Description TEXT(2000000000),
-	date_from DATE(2000000000),
-	Date_to DATE(2000000000),
-	reminder_frequency INTEGER,
-	parent_goal INTEGER,
-	ID INTEGER,
-	date_finished DATE(2000000000),
-	Addiction_type VARCHAR(256),
-	profile VARCHAR(256),
-         */
+        this.profile = Profile.FindOrCreate(data.getString("profile"));
 
-        //todo read subgoals
+        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+        try {
+            this.dateFrom = format.parse(data.getString("date_from"));
+        }catch (Exception ex){}
+        try {
+            this.dateTo = format.parse(data.getString("date_to"));
+        }catch (Exception ex){}
+        try {
+            this.dateFinished = format.parse(data.getString("date_finished"));
+        }catch (Exception ex){}
+        //todo frequency // reminder_frequency
+        //todo parent_goal
+
+        ExtendedCursor subGoalsCursor = Database.Instance.executeWithResult("Select * from " + this.getTableName() + " where parent_goal = " + this.getID());
+
+        while(subGoalsCursor.moveToNext())
+        {
+            Goal subGoal = new Goal(null);
+            subGoal.loadFromCursor(subGoalsCursor);
+            //todo SubGoal
+            //this.addSubGoal(subGoal);
+        }
     }
 
     @Override

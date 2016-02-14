@@ -9,7 +9,7 @@ import java.io.InvalidClassException;
  */
 public abstract class Record {
     public abstract String getTableName();
-    public abstract void loadFromCursor(ExtendedCursor data);
+    protected abstract void loadFromCursor(ExtendedCursor data);
     private  boolean isCreated = false;
     public  boolean getIsCreated(){return this.isCreated;}
 
