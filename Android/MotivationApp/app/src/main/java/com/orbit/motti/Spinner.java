@@ -78,7 +78,7 @@ public class Spinner extends AppCompatActivity {
 
                                 database.executeSQL("Update profile set credits=" + (currentCoints + 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
                                 coinsWon = 2;
-
+                                name = "";
                                 break;
                             case Coin3:
 
@@ -86,9 +86,10 @@ public class Spinner extends AppCompatActivity {
 
                                 database.executeSQL("Update profile set credits=" + (currentCoints + 2) + " where username = '" + GoalsActivity.p.getUsername() + "'");
                                 coinsWon = 3;
+                                name = "";
                                 break;
                             case Did_you_know:
-                                name += "good-to-know";
+                                name = "good-to-know";
                                 break;
                             case Donation:
                                 name = "Donation";
@@ -180,7 +181,7 @@ public class Spinner extends AppCompatActivity {
                                     Goal g = GoalsActivity.p.goals.get(num);
                                     final Dialog dialog = new Dialog(context);
                                     dialog.setContentView(R.layout.personal_goal_progress_popup);
-                                    dialog.setTitle("Progress question about goal: " + g.getGoalTitle());
+                                    dialog.setTitle(g.getGoalTitle());
 
                                     // set the custom dialog components - text, image and button
                                     TextView text = (TextView) dialog.findViewById(R.id.person_view);
@@ -220,7 +221,6 @@ public class Spinner extends AppCompatActivity {
                                 if (a.moveToFirst()) {
                                     r = new Random();
                                     int offset = r.nextInt(a.getCount());
-                                    r = new Random();
 
                                     a.move(offset % a.getCount());
                                     String msg = a.getString(a.getColumnIndex("description"));
@@ -235,15 +235,15 @@ public class Spinner extends AppCompatActivity {
                                             .setIcon(R.mipmap.achiv_stars);
                                 }
                                 if (b != null) {
-                                    int bonusCoinChanse = r.nextInt(3);
+                                    int bonusCoinChanse = r.nextInt(5);
 
-                                    if (bonusCoinChanse > 1) {
+                                    if (bonusCoinChanse > 2) {
                                         GoalsActivity.p.loadFromDatabase();
                                         currentCoints = GoalsActivity.p.getCredits();
                                         database.executeSQL("Update profile set credits=" + (currentCoints + 1) + " where username = '" + GoalsActivity.p.getUsername() + "'");
                                         GoalsActivity.p.loadFromDatabase();
 
-                                        Toast.makeText(context, "You won an extra coin!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(context, "Extra coin found!", Toast.LENGTH_LONG).show();
                                     }
                                     b.show();
                                 }

@@ -41,7 +41,10 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
     }
 
     public void removeItem(int position) {
+        Database.update(  goalList.get(position), "date_finished='2016-02-12'");
         goalList.remove(position);
+
+
     }
 
     public Goal getGoal(int position) {
@@ -83,8 +86,10 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.GoalViewHolder
 
             goalTitleTextView.setText(goal.getGoalTitle());
             goalDescriptionTextView.setText(goal.getGoalDescription());
-            if(goal.isFinished()){
+            if(goal.isFinished() ){
                 goalPeriodLeftTextView.setText("Finished");
+
+
             }
             else {
                 goalPeriodLeftTextView.setText("Days left: " + goal.getGoalPeriod());

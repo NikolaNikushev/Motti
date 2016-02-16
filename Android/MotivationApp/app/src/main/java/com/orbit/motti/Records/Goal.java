@@ -12,6 +12,7 @@ import com.orbit.motti.Record;
 import java.io.InvalidClassException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +58,13 @@ public class Goal extends Record implements Parcelable {
         return dateFinished;
     }
 
-    public boolean isFinished(){return dateFinished != null && dateFinished.getYear()> 2015;}
+    public boolean isFinished(){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateFinished);
+        int a = calendar.get(Calendar.YEAR);
+
+        return dateFinished != null && a> 2015;}
     public int daysPeriod(){
         return (int)((dateTo.getTime()-dateFrom.getTime()) / DateUtils.DAY_IN_MILLIS);
     }

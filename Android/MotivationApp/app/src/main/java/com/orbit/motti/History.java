@@ -24,6 +24,7 @@ import com.orbit.motti.Records.SubGoal;
 
 import java.io.InvalidClassException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class History extends AppCompatActivity {
@@ -43,7 +44,17 @@ public class History extends AppCompatActivity {
         } catch (InvalidClassException e) {
             e.printStackTrace();
         }
-        goals = GoalsActivity.p.goals;
+        goals = new ArrayList<>();
+        List<Goal> golz = GoalsActivity.p.goals;
+        for (int i = 0; i < golz.size();i++){
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime( golz.get(i).getDateFinished());
+            int a = calendar.get(Calendar.YEAR);
+            if (a > 2015)
+            goals.add(golz.get(i));
+        }
+       // goals = golz;
 
         mRecyclerView = (RecyclerView) findViewById(R.id.history_recycler_view);
         goalSwipeAdapter = new GoalAdapter(goals, this);

@@ -81,6 +81,8 @@ public class GoalsActivity extends AppCompatActivity {
 
                             @Override
                             public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                Database database =Database.Instance;
+                                database.executeSQL("Update goal set date_finished='2016-02-14' where id=" + goals.get(goals.size()-1).getID());
                                 for (int position : reverseSortedPositions) {
                                     lastDeletedPosition = position;
                                     lastDeletedGoal = goalSwipeAdapter.getGoal(position);
@@ -88,8 +90,8 @@ public class GoalsActivity extends AppCompatActivity {
                                     goalSwipeAdapter.notifyItemRemoved(position);
                                 }
                                 goalSwipeAdapter.notifyDataSetChanged();
-                                Database database = new Database(getApplicationContext());
-                                database.connectToDatabase();
+
+
                                 try {
                                     p.loadFromDatabase();
                                 } catch (InvalidClassException e) {
@@ -139,8 +141,7 @@ public class GoalsActivity extends AppCompatActivity {
                                     goalSwipeAdapter.removeItem(position);
                                     goalSwipeAdapter.notifyItemRemoved(position);
                                 }
-                                Database database = new Database(getApplicationContext());
-                                database.connectToDatabase();
+                                Database database =Database.Instance;
                                 try {
                                     p.loadFromDatabase();
                                 } catch (InvalidClassException e) {
